@@ -1,0 +1,257 @@
+/* ========================================
+   JSF Todo App - スタイルシート
+   FlashContainer を活用した状態管理サンプル
+   ======================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #f0f4f8;
+    color: #2d3748;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #2b6cb0;
+}
+
+.subtitle {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* ---- カード ---- */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card h2, .card h3 {
+    margin-bottom: 1rem;
+    color: #2b6cb0;
+    font-size: 1.1rem;
+}
+
+/* ---- 統計バッジ ---- */
+.stats {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-badge {
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.stat-badge.total    { background: #ebf4ff; color: #2b6cb0; }
+.stat-badge.completed { background: #f0fff4; color: #276749; }
+.stat-badge.pending  { background: #fffaf0; color: #c05621; }
+
+/* ---- フォーム ---- */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.4rem;
+}
+
+.input-field,
+.textarea-field {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66,153,225,0.2);
+}
+
+.textarea-field {
+    resize: vertical;
+}
+
+.error-msg {
+    color: #e53e3e;
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    display: block;
+}
+
+/* ---- ボタン ---- */
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:hover   { opacity: 0.88; }
+.btn:active  { transform: scale(0.97); }
+
+.btn-primary   { background: #4299e1; color: #fff; }
+.btn-secondary { background: #a0aec0; color: #fff; }
+.btn-danger    { background: #fc8181; color: #fff; }
+
+/* ---- Todo アイテム ---- */
+.todo-item {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.75rem;
+    transition: background 0.15s;
+}
+
+.item-completed { background: #f7fafc; opacity: 0.75; }
+.item-pending   { background: #fff; }
+
+.todo-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.todo-title {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+    color: #a0aec0;
+}
+
+.todo-desc {
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: #718096;
+    padding-left: 2.5rem;
+}
+
+.todo-actions {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.btn-toggle {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    cursor: pointer;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.toggle-done { border-color: #48bb78; color: #48bb78; }
+.toggle-open { border-color: #a0aec0; color: #a0aec0; }
+
+.empty-msg {
+    text-align: center;
+    color: #a0aec0;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* ---- メッセージ ---- */
+.messages {
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background: #ebf8ff;
+    border-left: 4px solid #4299e1;
+    color: #2b6cb0;
+    font-size: 0.9rem;
+}
+
+/* ---- 詳細ページ ---- */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.info-table th,
+.info-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.info-table th {
+    width: 30%;
+    color: #718096;
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.badge-completed { background: #f0fff4; color: #276749; }
+.badge-pending   { background: #fffaf0; color: #c05621; }
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.error-section p {
+    color: #c05621;
+    margin-bottom: 1rem;
+}

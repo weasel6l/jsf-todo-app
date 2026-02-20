@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Todo 詳細 - JSF Todo App</title>
+    <h:outputStylesheet library="css" name="todo.css"/>
+</h:head>
+<h:body>
+    <div class="container">
+        <header>
+            <h1>&#128203; Todo 詳細・編集</h1>
+        </header>
+
+        <!--
+            FlashContainer から取得した selectedTodo が存在する場合に表示。
+            TodoDetailBean#init() で Flash から取得したオブジェクトを参照します。
+        -->
+        <h:panelGroup rendered="#{todoDetailBean.selectedTodo != null}">
+
+            <!-- 参照情報 (FlashContainer から取得した値) -->
+            <section class="card detail-section">
+                <h3>&#128196; 基本情報 (Flash から取得)</h3>
+                <table class="info-table">
+                    <tr>
+                        <th>ID</th>
+                        <td>#{todoDetailBean.selectedTodo.id}</td>
+                    </tr>
+                    <tr>
+                        <th>作成日時</th>
+                        <td>#{todoDetailBean.selectedTodo.formattedCreatedAt}</td>
+                    </tr>
+                    <tr>
+                        <th>ステータス</th>
+                        <td>
+                            <span class="status-badge
+                                #{todoDetailBean.selectedTodo.completed
+                                    ? 'badge-completed' : 'badge-pending'}">
+                                #{todoDetailBean.selectedTodo.completed ? '&#10003; 完了' : '&#9675; 未完了'}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+
+            <!-- 編集フォーム -->
+            <section class="card edit-section">
+                <h3>&#9998; 編集</h3>
+                <h:form id="editForm">
+                    <h:messages globalOnly="true" styleClass="messages" showDetail="true"/>
+
+                    <div class="form-group">
+                        <h:outputLabel for="editTitle" value="タイトル *" styleClass="label"/>
+                        <h:inputText id="editTitle"
+                                     value="#{todoDetailBean.editTitle}"
+                                     styleClass="input-field"
+                                     maxlength="100"
+                                     required="true"/>
+                        <h:message for="editTitle" styleClass="error-msg"/>
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="editDesc" value="説明" styleClass="label"/>
+                        <h:inputTextarea id="editDesc"
+                                         value="#{todoDetailBean.editDescription}"
+                                         styleClass="textarea-field"
+                                         rows="4"/>
+                    </div>
+
+                    <div class="form-actions">
+                        <h:commandButton value="保存"
+                                         action="#{todoDetailBean.save}"
+                                         styleClass="btn btn-primary"/>
+                        <h:commandButton value="キャンセル"
+                                         action="#{todoDetailBean.cancel}"
+                                         styleClass="btn btn-secondary"
+                                         immediate="true"/>
+                    </div>
+                </h:form>
+            </section>
+
+        </h:panelGroup>
+
+        <!-- Flash データがない場合 (直接アクセスやセッション切れ) -->
+        <h:panelGroup rendered="#{todoDetailBean.selectedTodo == null}">
+            <section class="card error-section">
+                <p>&#9888; Todo が見つかりません。セッションが切れた可能性があります。</p>
+                <h:link value="&#8592; 一覧に戻る" outcome="todos" styleClass="btn btn-secondary"/>
+            </section>
+        </h:panelGroup>
+    </div>
+</h:body>
+</html>
