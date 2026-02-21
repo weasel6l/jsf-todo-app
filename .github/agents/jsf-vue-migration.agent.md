@@ -1,5 +1,5 @@
 ---
-description: JSF → Vue + API マイグレーション作業エージェント。Helidon MP による REST API 実装を担当する。api-implementation スキルおよび tdd-java スキルを用いてバックエンド API を TDD で実装する。Vue 側の実装はこのエージェントの責務外。
+description: JSFからのマイグレーション作業エージェント。Helidon MP による REST API 実装を担当する。api-implementation スキルおよび tdd-java スキルを用いてバックエンド API を TDD で実装する。フロントエンド側の実装はこのエージェントの責務外。
 tools:
   - editFiles
   - runCommands
@@ -26,7 +26,7 @@ tools:
 ## 1. 役割
 
 - 本エージェントの責務は **Helidon MP によるバックエンド REST API 実装** のみとする
-- フロントエンド（Vue/画面）の実装は行わない
+- フロントエンドの実装は行わない
 - 実装時は `api-implementation` スキルおよび `tdd-java` スキルを適用する
 
 ---
@@ -44,5 +44,3 @@ tools:
 - API は **Helidon MP** で実装する
 - OpenAPI アノテーションを活用して仕様を明示化する
 - 画面側の実装はこのエージェントでは行わない。**API だけを実装することが責務**
-
----

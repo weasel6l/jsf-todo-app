@@ -1,6 +1,6 @@
 ---
 name: api-implementation
-description: Helidon MP を用いた REST API の実装ルール。コーディング規約・Javadoc 規約・バリデーション規約を含む。JSF → Vue マイグレーション時のバックエンド API 実装に使用する。
+description: Helidon MP を用いた REST API の実装ルール。コーディング規約・Javadoc 規約・バリデーション規約を含む。JSFからのマイグレーション時のバックエンド API 実装に使用する。
 ---
 
 ## 1. コーディング規約
