@@ -33,6 +33,10 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
   - equals に依存した比較は禁止する
 - テスト方針はデトロイト派とする
 - Resource クラスには対応する ResourceTest を実装する
+- Service クラスには ServiceTest を実装しない
+  - Service クラスのテストは ResourceTest 内で行う
+  - ServiceTest クラスは作成しない
+  - テストクラスはResourceクラスとバリデーションクラスのみとする
 - Mock は 境界（外部 I/O）のみ に使用する
 - @Nested を用いてテスト観点ごとにグループ化する
 - テストメソッドには @DisplayName を付与し、日本語で観点を記載する
