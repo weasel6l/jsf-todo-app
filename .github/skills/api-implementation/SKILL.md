@@ -25,7 +25,27 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 - 全てのテキストファイルは改行（newline）で終わること
   - Java ファイル・設定ファイル・その他すべてのテキストファイルが対象
   - ファイルの最終行の末尾に改行がない場合、コミット対象から除外して修正すること
-  - PowerShell で `[System.IO.File]::WriteAllText` を使う場合、文字列末尾に `\n` を付けることで末尾改行を保証する
+  - PowerShell で `[System.IO.File]::WriteAllText` を使う場合、**文字列末尾に必ず `\n` を付けること**
+
+> **警告（PowerShell here-string の落とし穴）**: `@'...'@` 形式の here-string は
+> `'@` の直前の改行を含まない。コンテンツの末尾に明示的に `\n` を追加しないと
+> 末尾改行がつかない。
+> 正しい書き方: 文字列末尾の `}` の後に空行または `\n` を追加する。
+>
+> **NG**: `$c = @'\n...}\n'@`  （`'@`直前に内容がない行 = 改行なし）
+>
+> **OK**: `$c = @'\n...}\n\n'@`  （最後の`}`の後に改行が1つある）
+
+#### 末尾改行の検証（コミット前に必ず実行する）
+
+新規作成・変更したすべての Java ファイルについて、以下のコマンドで末尾バイトを検証すること。
+`LastByte=10`（LF）でない場合は修正してからコミットすること。
+
+```powershell
+# 単一ファイルの確認
+$b = [System.IO.File]::ReadAllBytes("path\to\File.java")
+"LastByte=" + $b[$b.Length-1] + " (10=OK/LF, other=NG)"
+```
 
 ---
 
@@ -122,8 +142,15 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 
 - 記述はプレーンテキストを基本とし、HTML タグの使用は禁止する
 
-- 文体は常体とし、敬語は使用しない  
-- 文末に句点（。）を付けない
+- 文体は常体とし、敗語は使用しない
+- **Javadoc の文末に句点（。）を付けてはならない**
+  - 「した。」「保持する。」「返す。」のような書き方は禁止する
+  - コミット前に以下のコマンドで0件であることを必ず確認する
+
+    ```powershell
+    # Javadoc 行末の句点を検出する (0 件 = OK)
+    Select-String -Path "src\main\java\**\*.java" -Pattern "\*\s.*\u3002\s*$" -Recurse | Where-Object { $_.Line -match '^\s*\*' }
+    ```
 
 - 実装内容の説明ではなく、
   「責務」「前提条件」「事後条件」を記載すること
@@ -190,3 +217,91 @@ private final TodoRepository repository;
 
 - API エンドポイントでは @Valid を必ず使用し、
   Bean Validation を有効化すること
+
+---
+
+## 4. OpenAPI アノテーション規約
+
+> MicroProfile OpenAPI アノテーション（`org.eclipse.microprofile.openapi.annotations`）を使用すること
+> Swagger アノテーション（`io.swagger.core.v3`）は使用しない
+
+- REST API の **すべてのエンドポイントに OpenAPI アノテーションを必ず付与する**
+  - アノテーションなしでの Resource クラスのコミットは禁止する
+  - 「あとで追加する」は認めない。実装と同時に付与すること
+
+- DTO には **`@Schema` アノテーションを必ず付与する**
+  - アノテーションなしでの DTO クラスのコミットは禁止する
+  - クラスレベル・フィールドレベルの両方に付与すること
+
+### Resource クラスの必須アノテーション一覧
+
+| アノテーション | パッケージ | 付与対象 |
+|---|---|---|
+| `@Tag` | `org.eclipse.microprofile.openapi.annotations.tags` | Resource クラス：API グループ名（`name`）と説明（`description`） |
+| `@Operation` | `org.eclipse.microprofile.openapi.annotations` | 各エンドポイントメソッド：`summary`（1行説明）と `description`（詳細） |
+| `@APIResponse` / `@APIResponses` | `org.eclipse.microprofile.openapi.annotations.responses` | 各エンドポイントメソッド：返却する HTTP ステータスコードと内容 |
+| `@Parameter` | `org.eclipse.microprofile.openapi.annotations.parameters` | `@PathParam` / `@QueryParam` 引数：パラメータの説明 |
+| `@RequestBody` | `org.eclipse.microprofile.openapi.annotations.parameters` | `@POST` / `@PUT` のリクエスト引数：リクエストボディの説明 |
+
+> **注意**: MicroProfile OpenAPI では `@APIResponse` / `@APIResponses`（大文字 API）を使用する
+> Swagger の `@ApiResponse` / `@ApiResponses`（小文字 pi）とは異なるため注意すること
+
+### DTO クラスの必須アノテーション一覧
+
+| アノテーション | パッケージ | 付与対象 |
+|---|---|---|
+| `@Schema(description = "...")` | `org.eclipse.microprofile.openapi.annotations.media` | DTO クラス：DTO 全体の役割説明 |
+| `@Schema(description = "...", example = "...")` | 同上 | 各フィールド：フィールドの意味と値の例 |
+| `@Schema(..., required = true)` | 同上 | 必須フィールド：入力必須であることを明示する |
+| `@Schema(..., maxLength = N)` | 同上 | 文字列フィールド：バリデーション上限に合わせた最大長 |
+
+#### 記述例（リクエスト DTO）
+
+```java
+@Schema(description = "Todo 追加リクエスト")
+public class TodoAddRequest {
+
+    @Schema(description = "Todo のタイトル",
+            required = true,
+            maxLength = 100,
+            example = "牛乳を買う")
+    @NotBlank
+    private String title;
+
+    @Schema(description = "Todo の説明",
+            maxLength = 500,
+            example = "スーパーで購入する")
+    private String description;
+}
+```
+
+#### 記述例（レスポンス DTO）
+
+```java
+@Schema(description = "Todo アイテムのレスポンス")
+public class TodoItemResponse {
+
+    @Schema(description = "Todo の一意識別子", example = "1")
+    private Long id;
+
+    @Schema(description = "完了状態フラグ。true の場合は完了済み", example = "false")
+    private boolean completed;
+}
+```
+
+### コミット前の自己チェック
+
+#### Resource クラス
+
+- [ ] Resource クラスに `@Tag` が付与されているか
+- [ ] すべてのエンドポイントメソッドに `@Operation(summary = ...)` が付与されているか
+- [ ] すべてのエンドポイントメソッドに `@APIResponses` が付与されているか（`@ApiResponses` ではなく `@APIResponses`）
+- [ ] `@PathParam` / `@QueryParam` 引数に `@Parameter` が付与されているか
+- [ ] `@POST` / `@PUT` のリクエスト引数に `@RequestBody` が付与されているか
+
+#### DTO クラス
+
+- [ ] DTO クラスに `@Schema(description = "...")` が付与されているか
+- [ ] すべてのフィールドに `@Schema(description = "...", example = "...")` が付与されているか
+- [ ] 必須フィールドに `required = true` が付与されているか（`requiredMode = Schema.RequiredMode.REQUIRED` ではなく）
+- [ ] 文字列フィールドに `maxLength` がバリデーション制約と一致して付与されているか
