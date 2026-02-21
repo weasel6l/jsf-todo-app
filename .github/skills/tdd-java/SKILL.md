@@ -26,7 +26,11 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 
 ## 2. 単体テスト規約
 
-- 単体テストは JUnit 5 で実装する
+- 単体テストは JUnit 5 を使用して実装する
+  - アサーションは原則 JUnit 5（org.junit.jupiter.api.Assertions）を使用する
+- オブジェクトのアサーションに限り AssertJ を使用してもよい
+  - assertThat を用いた fluent API を利用する
+  - equals に依存した比較は禁止する
 - テスト方針はデトロイト派とする
 - Resource クラスには対応する ResourceTest を実装する
 - Mock は 境界（外部 I/O）のみ に使用する
@@ -34,9 +38,6 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 - テストメソッドには @DisplayName を付与し、日本語で観点を記載する
 - テストメソッド名は英語で記述する
 - Given-When-Then 構文を用いてテストを構成する
-- アサーション失敗時に意図が分かるよう、必要に応じて message（例: AssertJ の `as`）を記載する
-- オブジェクトのアサーションには AssertJ を使用する
-  - assertThat を用いた fluent API を利用する
-  - equals に依存した比較は禁止する
+- アサーション失敗時に意図が分かるよう、必要に応じて message を記載する
 - パラメータライズドテストは原則使用しない
   - ただしバリデーションや境界値検証では使用を許可する
