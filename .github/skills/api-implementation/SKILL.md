@@ -76,6 +76,10 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 - コンストラクタには `@Inject` を付与し、
   CDI による依存性注入を明示すること
 
+- Lombok のコンストラクタ生成を使う場合は、以下のいずれかで `@Inject` を明示する
+  - `onConstructor_ = @Inject` を利用する
+  - 明示的にコンストラクタを実装して `@Inject` を付与する
+
 ---
 
 ## 2. Javadoc 規約

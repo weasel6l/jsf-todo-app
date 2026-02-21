@@ -34,7 +34,7 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 - テストメソッドには @DisplayName を付与し、日本語で観点を記載する
 - テストメソッド名は英語で記述する
 - Given-When-Then 構文を用いてテストを構成する
-- アサーションには必ず message を記載する
+- アサーション失敗時に意図が分かるよう、必要に応じて message（例: AssertJ の `as`）を記載する
 - オブジェクトのアサーションには AssertJ を使用する
   - assertThat を用いた fluent API を利用する
   - equals に依存した比較は禁止する

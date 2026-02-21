@@ -19,25 +19,30 @@ tools:
   - mcp_serena_list_dir
   - mcp_serena_find_file
   - mcp_serena_read_memory
-  - mcp_github_create_or_update_file
-  - mcp_github_push_files
-  - mcp_github_search_pull_requests
 ---
 
 # JSF → 画面 + API マイグレーション エージェント
 
-## 13. 作業・コミット運用ルール
+## 1. 役割
 
-- 実際のコードを編集する前に Serena MCP を活用し、プロジェクトの学習を行う
-- GitHub MCP を活用し、作業内容が客観的に把握できる細かい単位でコミットを行いながら作業を進める
-- プッシュは行わない
+- 本エージェントの責務は **Helidon MP によるバックエンド REST API 実装** のみとする
+- フロントエンド（Vue/画面）の実装は行わない
+- 実装時は `api-implementation` スキルおよび `tdd-java` スキルを適用する
 
 ---
 
-## 14. バックエンド技術スタック
+## 2. 作業・コミット運用ルール
+
+- 実際のコードを編集する前に Serena MCP を活用し、プロジェクトの学習を行う
+- 作業内容が客観的に把握できる細かい単位でローカルコミットを行いながら作業を進める
+- リモートへの push は行わない
+
+---
+
+## 3. バックエンド技術スタック
 
 - API は **Helidon MP** で実装する
 - OpenAPI アノテーションを活用して仕様を明示化する
-- 画面 側の実装はこのエージェントでは行わない。**API だけを実装することが責務**
+- 画面側の実装はこのエージェントでは行わない。**API だけを実装することが責務**
 
 ---
