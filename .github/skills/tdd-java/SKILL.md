@@ -9,6 +9,10 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 - **実装コードを 1 行でも書く前に、必ずテストを先に作成・実行すること**
   - テストが Red（失敗）であることをターミナルで確認してから実装を開始する
   - Red 確認前に Resource / Service / Repository の実装コードを書くことを禁止する
+- **テスト実行は、エージェントが新規作成したテストクラスのみを対象とする**
+  - `mvn test` 単体（全テスト実行）は禁止する
+  - 必ず `-Dtest={新規作成したテストクラス名}` オプションを指定してテストを実行すること
+  - 複数クラスを対象にする場合はカンマ区切りで指定する（例: `-Dtest=FooResourceTest,BarResourceTest`）
 
 ### TDD サイクル（必ず以下の順序を守ること）
 
@@ -19,16 +23,16 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 3. 以下のコマンドでテストが **失敗（Red）** であることを必ず確認する
 
 ```powershell
-mvn test 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
+mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
 ```
 
 #### フェーズ 2: Green（最小限の実装をする）
 
 1. テストが通る最小限のコードを実装する
-2. 以下のコマンドで **全テストが Green** であることを必ず確認する
+2. 以下のコマンドで **テストが Green** であることを必ず確認する
 
 ```powershell
-mvn test 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
+mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
 ```
 
 3. `Tests run: N, Failures: 0, Errors: 0` かつ `BUILD SUCCESS` を確認してから次へ進む
@@ -36,7 +40,7 @@ mvn test 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
 #### フェーズ 3: Refactor（リファクタリング）
 
 1. 重複除去・責務整理・Javadoc 補完・OpenAPI アノテーション付与を行う
-2. 再度 `mvn test` を実行し、Green が保たれていることを確認する
+2. 再度 `mvn test -Dtest={新規作成したテストクラス名}` を実行し、Green が保たれていることを確認する
 3. Refactor は省略してはならない
 
 ---
