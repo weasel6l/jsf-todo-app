@@ -180,22 +180,23 @@ list_memories を呼び出してメモリ一覧を確認する
 3. 以下のコマンドでテストが **失敗（Red）** であることを必ず確認する
 
 ```powershell
-mvn test 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
+mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
 ```
 
 4. Red が確認できない場合は、テストの書き方を見直すこと
 
-> **禁止**: `mvn test` で Red 確認前に実装コードを書かないこと
+> **禁止**: Red 確認前に実装コードを書かないこと  
+> **禁止**: `-Dtest=` を省略した `mvn test`（全テスト実行）を使用すること
 
 ---
 
 ### 3-2. 最小限の実装をする（Green フェーズ）
 
 1. テストが通る最小限のコードを実装する
-2. 以下のコマンドで **全テストが Green** であることを必ず確認する
+2. 以下のコマンドで **テストが Green** であることを必ず確認する
 
 ```powershell
-mvn test 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
+mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
 ```
 
 3. `Tests run: N, Failures: 0, Errors: 0` かつ `BUILD SUCCESS` を確認してから次へ進む
@@ -209,13 +210,13 @@ mvn test 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
 3. Resource クラスに OpenAPI アノテーション（`@Tag`・`@Operation`・`@APIResponses`・`@Parameter`・`@RequestBody`）を付与する
 4. DTO クラス・フィールドに `@Schema` アノテーション（`description`・`example`・`required`・`maxLength`）を付与する
 5. 新規ファイルの末尾改行を確認する（LastByte=10 であること）
-6. 再度 `mvn test` を実行し、Green が保たれていることを確認する
+6. 再度 `mvn test -Dtest={新規作成したテストクラス名}` を実行し、Green が保たれていることを確認する
 
 ---
 
 ### 3-4. コミット前チェック（1 エンドポイント実装完了時）
 
-- [ ] `mvn test` が `BUILD SUCCESS` であるか
+- [ ] `mvn test -Dtest={新規作成したテストクラス名}` が `BUILD SUCCESS` であるか
 - [ ] すべてのエンドポイントに `@Tag` / `@Operation` / `@APIResponses` が付与されているか（`@ApiResponses` ではなく `@APIResponses`）
 - [ ] すべての DTO クラスに `@Schema(description = "...")` が付与されているか
 - [ ] すべての DTO フィールドに `@Schema(description = "...", example = "...")` が付与されているか
