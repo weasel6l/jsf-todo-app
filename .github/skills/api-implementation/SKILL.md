@@ -26,6 +26,31 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 
 ---
 
+### ファイル規約
+
+#### エンコーディング
+
+- 新規作成するすべての Java ファイルは **UTF-8 BOM なし** で保存すること
+  - BOM あり（UTF-8 with BOM）は Java コンパイラがエラーとして扱う場合があるため禁止する
+  - PowerShell で `Set-Content` を使う場合は `-Encoding UTF8` を **使用しない**
+  - 代わりに `[System.Text.UTF8Encoding]::new($false)` と `[System.IO.File]::WriteAllText` の組み合わせを使用する
+
+#### Copyright ヘッダー
+
+- すべての新規 Java ソースファイルの先頭には、以下の形式で Copyright ヘッダーを記載すること
+
+```java
+/*
+ * Copyright (c) 2026 Your Company Name
+ * All rights reserved.
+ */
+```
+
+- ヘッダーは `package` 宣言より前に配置する
+- 既存ファイルへの遡及的な追加は不要とする（新規作成ファイルのみ対象）
+
+---
+
 ### Lombok 利用規約
 
 - 本プロジェクトでは、ボイラープレートコード削減を目的として
