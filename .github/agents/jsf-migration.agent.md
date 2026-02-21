@@ -166,7 +166,65 @@ list_memories を呼び出してメモリ一覧を確認する
 
 ---
 
-## 3. コミット運用ルール
+## 3. 実装ワークフロー（TDD サイクルの強制）
+
+すべての実装タスクは **1 エンドポイントずつ** 以下の手順を繰り返すこと。
+まとめて実装・まとめてテスト追加は禁止する。
+
+---
+
+### 3-1. テストを書く（Red フェーズ）
+
+1. `{画面名}ResourceTest` にテストメソッドを 1 件だけ追加する
+2. 対応する Resource・Service・Repository はまだ作成しないか、コンパイルが通る最小のスタブのみ作成する
+3. 以下のコマンドでテストが **失敗（Red）** であることを必ず確認する
+
+```powershell
+mvn test 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
+```
+
+4. Red が確認できない場合は、テストの書き方を見直すこと
+
+> **禁止**: `mvn test` で Red 確認前に実装コードを書かないこと
+
+---
+
+### 3-2. 最小限の実装をする（Green フェーズ）
+
+1. テストが通る最小限のコードを実装する
+2. 以下のコマンドで **全テストが Green** であることを必ず確認する
+
+```powershell
+mvn test 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
+```
+
+3. `Tests run: N, Failures: 0, Errors: 0` かつ `BUILD SUCCESS` を確認してから次へ進む
+
+---
+
+### 3-3. リファクタリング（Refactor フェーズ）
+
+1. 重複除去・責務整理を行う
+2. Javadoc を補完する（1 行 Javadoc がないことを確認する）
+3. Resource クラスに OpenAPI アノテーション（`@Tag`・`@Operation`・`@APIResponses`・`@Parameter`・`@RequestBody`）を付与する
+4. DTO クラス・フィールドに `@Schema` アノテーション（`description`・`example`・`required`・`maxLength`）を付与する
+5. 新規ファイルの末尾改行を確認する（LastByte=10 であること）
+6. 再度 `mvn test` を実行し、Green が保たれていることを確認する
+
+---
+
+### 3-4. コミット前チェック（1 エンドポイント実装完了時）
+
+- [ ] `mvn test` が `BUILD SUCCESS` であるか
+- [ ] すべてのエンドポイントに `@Tag` / `@Operation` / `@APIResponses` が付与されているか（`@ApiResponses` ではなく `@APIResponses`）
+- [ ] すべての DTO クラスに `@Schema(description = "...")` が付与されているか
+- [ ] すべての DTO フィールドに `@Schema(description = "...", example = "...")` が付与されているか
+- [ ] 新規ファイルすべてに末尾改行（LastByte=10）があるか
+- [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていないか
+
+---
+
+## 4. コミット運用ルール
 
 ### 基本方針
 
@@ -296,7 +354,7 @@ test(service): TodoDetailService の異常系テストを追加
 
 ---
 
-## 4. コミット除外ファイルの管理
+## 5. コミット除外ファイルの管理
 
 ### 自動生成ファイルのコミット禁止
 
@@ -326,7 +384,7 @@ test(service): TodoDetailService の異常系テストを追加
 
 ---
 
-## 5. バックエンド技術スタック
+## 6. バックエンド技術スタック
 
 - API は **Helidon MP** で実装する
 - OpenAPI アノテーションを活用して仕様を明示化する
