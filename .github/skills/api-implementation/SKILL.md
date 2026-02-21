@@ -23,6 +23,9 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
   - 可読性や責務の不自然な分割を招く場合は、この限りではない
 
 - 全てのテキストファイルは改行（newline）で終わること
+  - Java ファイル・設定ファイル・その他すべてのテキストファイルが対象
+  - ファイルの最終行の末尾に改行がない場合、コミット対象から除外して修正すること
+  - PowerShell で `[System.IO.File]::WriteAllText` を使う場合、文字列末尾に `\n` を付けることで末尾改行を保証する
 
 ---
 
@@ -130,6 +133,8 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 
 - Javadoc コメントは必ず複数行で記載すること  
   - 1 行のみの Javadoc は禁止する
+  - **この規則はフィールド・メンバ変数にも例外なく適用する**
+    - `/** 説明 */` のようなフィールドの 1 行 Javadoc も違反である
 
 ### 記載例
 
@@ -143,6 +148,24 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
  ```java
 /** NG: 1行で記載しない */
  ```
+
+```java
+/**
+ * OK: フィールドも複数行で記載する
+ */
+private final TodoRepository repository;
+```
+
+```java
+/** NG: フィールドの1行Javadocも禁止 */
+private final TodoRepository repository;
+```
+
+### コミット前の自己チェック
+
+- コミット前に以下のパターンで 1 行 Javadoc が残っていないことを確認すること
+  - 検索パターン（正規表現）: `/\*\* .+ \*/`
+  - 新規作成・変更したファイルに対して上記パターンで検索し、**0 件**であることを確認してからコミットする
 
 ---
 
