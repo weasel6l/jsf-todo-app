@@ -1,24 +1,35 @@
 ---
 description: JSFからのマイグレーション作業エージェント。Helidon MP による REST API 実装を担当する。api-implementation スキルおよび tdd-java スキルを用いてバックエンド API を TDD で実装する。フロントエンド側の実装はこのエージェントの責務外。
 tools:
-  - editFiles
-  - runCommands
+  - edit/editFiles
+  - read/readFile
+  - execute/getTerminalOutput
+  - execute/runInTerminal
+  - read/terminalLastCommand
+  - read/terminalSelection
   - search
-  - usages
-  - problems
-  - changes
-  - githubRepo
-  - mcp_serena_activate_project
-  - mcp_serena_get_symbols_overview
-  - mcp_serena_find_symbol
-  - mcp_serena_find_referencing_symbols
-  - mcp_serena_replace_symbol_body
-  - mcp_serena_insert_after_symbol
-  - mcp_serena_rename_symbol
-  - mcp_serena_search_for_pattern
-  - mcp_serena_list_dir
-  - mcp_serena_find_file
-  - mcp_serena_read_memory
+  - search/usages
+  - read/problems
+  - search/changes
+  - serena/check_onboarding_performed
+  - serena/onboarding
+  - serena/activate_project
+  - serena/get_current_config
+  - serena/get_symbols_overview
+  - serena/find_symbol
+  - serena/find_referencing_symbols
+  - serena/replace_symbol_body
+  - serena/insert_after_symbol
+  - serena/insert_before_symbol
+  - serena/rename_symbol
+  - serena/search_for_pattern
+  - serena/list_dir
+  - serena/find_file
+  - serena/list_memories
+  - serena/read_memory
+  - serena/write_memory
+  - serena/edit_memory
+  - serena/delete_memory
 ---
 
 # JSF → 画面 + API マイグレーション エージェント
@@ -33,27 +44,39 @@ tools:
 
 ## 2. 作業開始前の必須手順（Serena MCP によるプロジェクト学習）
 
-**コードの編集を一切行う前に、以下の手順を必ず完了すること。**
+**コードの編集を一切行う前に、以下の手順を必ず順番に完了すること。**
 
 ### 手順1: プロジェクトのアクティベート
 
 ```
-mcp_serena_activate_project を呼び出してプロジェクトを登録する
+activate_project(project="jsf-todo-app") を呼び出す
 ```
 
-### 手順2: 全体構造の把握
+### 手順2: オンボーディング状態の確認
 
 ```
-mcp_serena_get_symbols_overview を呼び出し、クラス・インターフェース・パッケージ構成を把握する
+check_onboarding_performed を呼び出す
 ```
 
-### 手順3: 既存コードの理解
+- **「onboarding not performed」と返った場合**: `onboarding` を呼び出してオンボーディングを実施する
+- **「onboarding already performed」と返った場合**: 手順3へ進む
 
-- JSF の backing bean クラスを `mcp_serena_find_symbol` で個別に調査する
+### 手順3: メモリの読み込み
+
+```
+list_memories を呼び出してメモリ一覧を確認する
+```
+
+- タスクに関連するメモリファイルを `read_memory` で読み込む
+- 特に `project_overview`, `code_structure`, `style_and_conventions` を優先して確認する
+
+### 手順4: 既存コードの理解
+
+- JSF の backing bean クラスを `find_symbol` で個別に調査する
 - 既存の model クラスを同様に把握する
 - 既存テストクラスを確認し、テスト方針・スタイルを把握する
 
-### 手順4: 学習完了の確認
+### 手順5: 学習完了の確認
 
 以下を把握してから実装に移ること:
 - 全 backing bean の責務と操作一覧
