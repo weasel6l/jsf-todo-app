@@ -436,8 +436,10 @@ test(service): TodoDetailService の異常系テストを追加
 - [ ] クラスに `@Tag(name = "...", description = "...")` が付与されている
 - [ ] すべてのエンドポイントメソッドに `@Operation(summary = "...", description = "...")` が付与されている
 - [ ] すべてのエンドポイントメソッドに `@APIResponses` が付与されている（`@ApiResponses` ではない）
+- [ ] 2xx 系 `@APIResponse` に `content = @Content(schema = @Schema(implementation = ...))` が付与されている
 - [ ] `@PathParam` / `@QueryParam` 引数に `@Parameter` が付与されている
 - [ ] `@POST` / `@PUT` のリクエスト引数に `@RequestBody` が付与されている
+- [ ] `@RequestBody` に `content = @Content(schema = @Schema(implementation = ...))` が付与されている
 
 ---
 
