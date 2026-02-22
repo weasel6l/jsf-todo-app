@@ -149,11 +149,15 @@ $b = [System.IO.File]::ReadAllBytes("path\to\File.java")
 
     ```powershell
     # Javadoc 行末の句点を検出する (0 件 = OK)
-    Select-String -Path "src\main\java\**\*.java" -Pattern "\*\s.*\u3002\s*$" -Recurse | Where-Object { $_.Line -match '^\s*\*' }
+    # src/main と src/test の両方を対象にする
+    Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
+    Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
     ```
 
 - 実装内容の説明ではなく、
   「責務」「前提条件」「事後条件」を記載すること
+  - テスト方針・実装方式（「デトロイト派」「実オブジェクトを使用」等）も記載しない
+  - このような情報はスキル文書・設計文書で管理すること
 
 - Javadoc コメントは `/**` で開始すること  
   - `/* ... */` 形式のコメントは使用しない
@@ -193,6 +197,15 @@ private final TodoRepository repository;
 - コミット前に以下のパターンで 1 行 Javadoc が残っていないことを確認すること
   - 検索パターン（正規表現）: `/\*\* .+ \*/`
   - 新規作成・変更したファイルに対して上記パターンで検索し、**0 件**であることを確認してからコミットする
+
+- Javadoc に HTML タグが含まれていないことを確認すること
+
+  ```powershell
+  # Javadoc 内の HTML タグを検出する (0 件 = OK)
+  # src/main と src/test の両方を対象にする
+  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  ```
 
 ---
 

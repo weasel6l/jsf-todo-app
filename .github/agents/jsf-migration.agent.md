@@ -250,16 +250,48 @@ list_memories を呼び出してメモリ一覧を確認する
 - [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていない
 
   ```powershell
-  Select-String -Path "src\main\java\**\*.java" -Pattern '/\*\* .+ \*/' -Recurse
+  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '/\*\* .+ \*/'
   ```
 
 - [ ] Javadoc 行末に句点（。）がない
 
   ```powershell
-  Select-String -Path "src\main\java\**\*.java" -Pattern "\*\s.*\u3002\s*$" -Recurse | Where-Object { $_.Line -match '^\s*\*' }
+  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
   ```
 
 - [ ] ワイルドカードインポート（`import ... *`）を使用していない
+
+- [ ] Javadoc に HTML タグを使用していない
+
+  ```powershell
+  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  ```
+
+---
+
+### `src/test/java/**/*.java` を変更した場合
+
+- [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていない
+
+  ```powershell
+  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '/\*\* .+ \*/'
+  ```
+
+- [ ] Javadoc 行末に句点（。）がない
+
+  ```powershell
+  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
+  ```
+
+- [ ] Javadoc に HTML タグを使用していない
+
+  ```powershell
+  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  ```
+
+- [ ] クラス・フィールド・`@BeforeEach` / `@BeforeAll` / `@Test` メソッドすべてに Javadoc が付与されている
+- [ ] Javadoc に実装方針・テスト方式の説明（「デトロイト派」「実オブジェクトを使用」等）が含まれていない
+  - 記述対象は「責務・前提条件・事後条件」のみとする
 
 ---
 
