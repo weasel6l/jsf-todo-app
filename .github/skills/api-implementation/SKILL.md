@@ -128,6 +128,30 @@ $b = [System.IO.File]::ReadAllBytes("path\to\File.java")
   - `onConstructor_ = @Inject` を利用する
   - 明示的にコンストラクタを実装して `@Inject` を付与する
 
+#### CDI プロキシ要件と Lombok の組み合わせ（重要）
+
+CDI はランタイムにプロキシクラスを生成するため、
+**管理 Bean（`@RequestScoped` / `@ApplicationScoped` 等）には引数なしコンストラクタが必須**。
+
+`@RequiredArgsConstructor` で `final` フィールドを持つクラスに引数なしコンストラクタを追加する場合、
+**`@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)` を必ず使用すること**。
+`force = true` がないと `final` フィールドが初期化されないとしてコンパイルエラーになる。
+
+```java
+// OK: CDI プロキシ要件を満たすパターン
+@ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+public class TodoListService {
+    private final TodoRepository repository;
+}
+```
+
+```java
+// NG: force = true がないと final フィールドの初期化エラーでコンパイル失敗
+@NoArgsConstructor(access = AccessLevel.PROTECTED)  // コンパイルエラー
+```
+
 ---
 
 ## 2. Javadoc 規約
