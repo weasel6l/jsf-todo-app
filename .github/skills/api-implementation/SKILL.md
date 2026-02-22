@@ -72,6 +72,14 @@ $b = [System.IO.File]::ReadAllBytes("path\to\File.java")
 - ヘッダーは `package` 宣言より前に配置する
 - 既存ファイルへの遡及的な追加は不要とする（新規作成ファイルのみ対象）
 
+#### Copyright ヘッダーの検証（コミット前）
+
+- 新規作成した Java ファイルは、先頭が Copyright ヘッダーで始まることを確認する
+- 少なくとも以下を目視で確認する
+  - 1 行目が `/*`
+  - `Copyright (c) 2026 Your Company Name` を含む
+  - `package` 宣言より前に記載されている
+
 ---
 
 ### Lombok 利用規約

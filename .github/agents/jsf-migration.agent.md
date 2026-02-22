@@ -254,10 +254,21 @@ list_memories を呼び出してメモリ一覧を確認する
 - [ ] `.gitignore` がステージに含まれていない
 - [ ] `git add <ファイルパス>` で対象ファイルを明示的に指定している（`git add -A` / `git add .` は使用しない）
 - [ ] コミットメッセージが Conventional Commits 形式（`<type>(<scope>): <subject>`）である
+- [ ] 完了報告前にローカルコミットを実行している
+- [ ] コミット実行後に `git status` を確認し、意図しない差分が残っていない
 
 ---
 
 ### `src/main/java/**/*.java` を変更した場合
+
+- [ ] 新規作成したすべての Java ファイル先頭に Copyright ヘッダーを記載している
+
+  ```java
+  /*
+   * Copyright (c) 2026 Your Company Name
+   * All rights reserved.
+   */
+  ```
 
 - [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていない
 
