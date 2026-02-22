@@ -214,14 +214,9 @@ mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -
 
 ---
 
-### 3-4. コミット前チェック（1 エンドポイント実装完了時）
+### 3-4. コミット前チェック
 
-- [ ] `mvn test -Dtest={新規作成したテストクラス名}` が `BUILD SUCCESS` であるか
-- [ ] すべてのエンドポイントに `@Tag` / `@Operation` / `@APIResponses` が付与されているか（`@ApiResponses` ではなく `@APIResponses`）
-- [ ] すべての DTO クラスに `@Schema(description = "...")` が付与されているか
-- [ ] すべての DTO フィールドに `@Schema(description = "...", example = "...")` が付与されているか
-- [ ] 新規ファイルすべてに末尾改行（LastByte=10）があるか
-- [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていないか
+**セクション 7「Definition of Done」のチェックリストをすべて通過させること。**
 
 ---
 
@@ -348,10 +343,10 @@ test(service): TodoDetailService の異常系テストを追加
 - [ ] このコミットは 1 つの目的のみを持っているか
 - [ ] コミットメッセージの type と scope は適切か
 - [ ] 関係のないファイルが含まれていないか（`git diff --staged` で確認）
-- [ ] **`.gitignore` がステージに含まれていないか**
 - [ ] デバッグ用のコード・不要なコメントが残っていないか
 - [ ] テストがある場合、同一コミットに含まれているか（または意図的に分けているか）
-- [ ] **新規作成・変更したすべてのファイルが改行（LF）で終わっているか**
+
+> コード品質・ファイル管理に関するチェックはセクション 7「Definition of Done」を参照すること。
 
 ---
 
@@ -390,3 +385,78 @@ test(service): TodoDetailService の異常系テストを追加
 - API は **Helidon MP** で実装する
 - OpenAPI アノテーションを活用して仕様を明示化する
 - 画面側の実装はこのエージェントでは行わない。**API だけを実装することが責務**
+
+---
+
+## 7. Definition of Done
+
+**すべての作業はこの完了定義を満たしてからコミットすること。**
+変更対象に応じて該当するセクションのチェックをすべて通過させる。
+
+---
+
+### 共通チェック（すべての変更で必須）
+
+- [ ] `mvn test -Dtest={新規作成したテストクラス名}` が `BUILD SUCCESS` である
+- [ ] 新規作成・変更したすべてのファイルが末尾改行で終わっている（`LastByte=10`）
+
+  ```powershell
+  $b = [System.IO.File]::ReadAllBytes("path\to\File.java")
+  "LastByte=" + $b[$b.Length-1] + " (10=OK/LF, other=NG)"
+  ```
+
+- [ ] 既存 JSF コード（Backing Bean・Model・XHTML・`faces-config.xml`・`web.xml`）を変更していない
+- [ ] `.serena/`・`target/`・IDE 設定ファイルがステージに含まれていない
+- [ ] `.gitignore` がステージに含まれていない
+- [ ] `git add <ファイルパス>` で対象ファイルを明示的に指定している（`git add -A` / `git add .` は使用しない）
+- [ ] コミットメッセージが Conventional Commits 形式（`<type>(<scope>): <subject>`）である
+
+---
+
+### `src/main/java/**/*.java` を変更した場合
+
+- [ ] 1 行 Javadoc（`/** ... */` パターン）が残っていない
+
+  ```powershell
+  Select-String -Path "src\main\java\**\*.java" -Pattern '/\*\* .+ \*/' -Recurse
+  ```
+
+- [ ] Javadoc 行末に句点（。）がない
+
+  ```powershell
+  Select-String -Path "src\main\java\**\*.java" -Pattern "\*\s.*\u3002\s*$" -Recurse | Where-Object { $_.Line -match '^\s*\*' }
+  ```
+
+- [ ] ワイルドカードインポート（`import ... *`）を使用していない
+
+---
+
+### Resource クラス（`*Resource.java`）を変更した場合
+
+- [ ] クラスに `@Tag(name = "...", description = "...")` が付与されている
+- [ ] すべてのエンドポイントメソッドに `@Operation(summary = "...", description = "...")` が付与されている
+- [ ] すべてのエンドポイントメソッドに `@APIResponses` が付与されている（`@ApiResponses` ではない）
+- [ ] `@PathParam` / `@QueryParam` 引数に `@Parameter` が付与されている
+- [ ] `@POST` / `@PUT` のリクエスト引数に `@RequestBody` が付与されている
+
+---
+
+### DTO クラス（`*Request.java` / `*Response.java`）を変更した場合
+
+- [ ] クラスに `@Schema(description = "...")` が付与されている
+- [ ] すべてのフィールドに `@Schema(description = "...", example = "...")` が付与されている
+- [ ] 必須フィールドに `required = true` が付与されている
+- [ ] 文字列フィールドに `maxLength` がバリデーション制約と一致して付与されている
+
+---
+
+### カスタム ConstraintValidator を追加した場合
+
+- [ ] 制約アノテーション・ConstraintValidator 実装・エラーメッセージ定義がすべて揃っている
+- [ ] 対応する `{制約名}ValidatorTest` が作成されている
+
+---
+
+### 実行不能項目がある場合
+
+- [ ] 理由をコミットメッセージまたは TODO コメントに明記している
