@@ -233,18 +233,112 @@ private final TodoRepository repository;
   - アノテーションなしでの DTO クラスのコミットは禁止する
   - クラスレベル・フィールドレベルの両方に付与すること
 
+### アプリケーション全体の OpenAPI 定義
+
+- JAX-RS `Application` クラスに `@OpenAPIDefinition` を付与し、API 全体のメタ情報を定義する
+- プロジェクトにつき **1 箇所のみ** 定義する
+
+| アノテーション | パッケージ | 付与対象 |
+|---|---|---|
+| `@OpenAPIDefinition` | `org.eclipse.microprofile.openapi.annotations` | `Application` クラス：`info`（タイトル・バージョン・説明）を指定する |
+| `@Info` | `org.eclipse.microprofile.openapi.annotations.info` | `@OpenAPIDefinition` の `info` 属性：`title`・`version`・`description` |
+
+```java
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Todo API",
+        version = "1.0.0",
+        description = "JSF Todo アプリのマイグレーション API"
+    )
+)
+@ApplicationScoped
+@ApplicationPath("/api")
+public class TodoApplication extends Application { }
+```
+
 ### Resource クラスの必須アノテーション一覧
 
 | アノテーション | パッケージ | 付与対象 |
 |---|---|---|
 | `@Tag` | `org.eclipse.microprofile.openapi.annotations.tags` | Resource クラス：API グループ名（`name`）と説明（`description`） |
 | `@Operation` | `org.eclipse.microprofile.openapi.annotations` | 各エンドポイントメソッド：`summary`（1行説明）と `description`（詳細） |
-| `@APIResponse` / `@APIResponses` | `org.eclipse.microprofile.openapi.annotations.responses` | 各エンドポイントメソッド：返却する HTTP ステータスコードと内容 |
+| `@APIResponse` / `@APIResponses` | `org.eclipse.microprofile.openapi.annotations.responses` | 各エンドポイントメソッド：HTTP ステータスコード・説明・レスポンススキーマ |
+| `@Content` | `org.eclipse.microprofile.openapi.annotations.media` | `@APIResponse` / `@RequestBody` 内：`mediaType` と `schema` の指定 |
 | `@Parameter` | `org.eclipse.microprofile.openapi.annotations.parameters` | `@PathParam` / `@QueryParam` 引数：パラメータの説明 |
-| `@RequestBody` | `org.eclipse.microprofile.openapi.annotations.parameters` | `@POST` / `@PUT` のリクエスト引数：リクエストボディの説明 |
+| `@RequestBody` | `org.eclipse.microprofile.openapi.annotations.parameters` | `@POST` / `@PUT` のリクエスト引数：説明・必須指定・リクエストスキーマ |
 
 > **注意**: MicroProfile OpenAPI では `@APIResponse` / `@APIResponses`（大文字 API）を使用する
 > Swagger の `@ApiResponse` / `@ApiResponses`（小文字 pi）とは異なるため注意すること
+
+#### `@APIResponse` での `@Content` 使用ルール
+
+- **2xx 系レスポンス**には `content` 属性で `@Content` を付与し、レスポンススキーマを明示すること
+- **4xx / 5xx 系レスポンス**（エラーレスポンス）では `content` は省略してよい
+
+#### `@RequestBody` での `@Content` 使用ルール
+
+- `@RequestBody` には `content` 属性で `@Content` を付与し、リクエストスキーマを明示すること
+- `required = true` を明示すること
+
+#### 記述例（Resource クラス）
+
+```java
+@Tag(name = "Todo一覧", description = "Todo 一覧画面の API")
+@Path("/api/todo/list")
+@RequestScoped
+public class TodoListResource {
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Todo 一覧取得",
+        description = "登録されているすべての Todo を一覧で返却する"
+    )
+    @APIResponses({
+        @APIResponse(
+            responseCode = "200",
+            description = "取得成功",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = TodoListResponse.class)
+            )
+        )
+    })
+    public TodoListResponse getList() { ... }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Todo 追加",
+        description = "新しい Todo を追加する"
+    )
+    @APIResponses({
+        @APIResponse(
+            responseCode = "201",
+            description = "追加成功",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = TodoAddResponse.class)
+            )
+        ),
+        @APIResponse(
+            responseCode = "400",
+            description = "バリデーションエラー"
+        )
+    })
+    public Response addTodo(
+        @RequestBody(
+            description = "Todo 追加リクエスト",
+            required = true,
+            content = @Content(
+                schema = @Schema(implementation = TodoAddRequest.class)
+            )
+        )
+        @Valid TodoAddRequest request
+    ) { ... }
+}
+```
 
 ### DTO クラスの必須アノテーション一覧
 
@@ -296,8 +390,10 @@ public class TodoItemResponse {
 - [ ] Resource クラスに `@Tag` が付与されているか
 - [ ] すべてのエンドポイントメソッドに `@Operation(summary = ...)` が付与されているか
 - [ ] すべてのエンドポイントメソッドに `@APIResponses` が付与されているか（`@ApiResponses` ではなく `@APIResponses`）
+- [ ] 2xx 系 `@APIResponse` に `content = @Content(schema = @Schema(implementation = ...))` が付与されているか
 - [ ] `@PathParam` / `@QueryParam` 引数に `@Parameter` が付与されているか
 - [ ] `@POST` / `@PUT` のリクエスト引数に `@RequestBody` が付与されているか
+- [ ] `@RequestBody` に `content = @Content(schema = @Schema(implementation = ...))` が付与されているか
 
 #### DTO クラス
 
