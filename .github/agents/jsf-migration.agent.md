@@ -178,10 +178,22 @@ list_memories を呼び出してメモリ一覧を確認する
 `tdd-java` スキルの Refactor に加え、`api-implementation` スキルに基づき以下も実施すること:
 
 1. Javadoc を補完する（Javadoc 規約に準拠）
-2. Resource クラスに OpenAPI アノテーションを付与する（OpenAPI 規約に準拠）
-3. DTO クラスに `@Schema` アノテーションを付与する
-4. 新規ファイルの末尾改行を確認する（`LastByte=10`）
-5. テストを再実行し Green が保たれていることを確認する
+2. Javadoc の品質チェックを実行する（以下をすべて 0 件で通過させること）
+
+   ```powershell
+   # 句点（。）チェック
+   Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
+   Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
+
+   # HTML タグ（Javadoc 行のみ対象）チェック
+   Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
+   Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
+   ```
+
+3. Resource クラスに OpenAPI アノテーションを付与する（OpenAPI 規約に準拠）
+4. DTO クラスに `@Schema` アノテーションを付与する
+5. 新規ファイルの末尾改行を確認する（`LastByte=10`）
+6. テストを再実行し Green が保たれていることを確認する
 
 ### コミット前チェック
 
@@ -264,7 +276,8 @@ list_memories を呼び出してメモリ一覧を確認する
 - [ ] Javadoc に HTML タグを使用していない
 
   ```powershell
-  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  # Javadoc 行（ * で始まる行）のみを対象にすること。Where-Object を省くとジェネリクス（List<T> 等）も誤検出する
+  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
   ```
 
 ---
@@ -286,7 +299,8 @@ list_memories を呼び出してメモリ一覧を確認する
 - [ ] Javadoc に HTML タグを使用していない
 
   ```powershell
-  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*'
+  # Javadoc 行（ * で始まる行）のみを対象にすること。Where-Object を省くとジェネリクス（List<T> 等）も誤検出する
+  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
   ```
 
 - [ ] クラス・フィールド・`@BeforeEach` / `@BeforeAll` / `@Test` メソッドすべてに Javadoc が付与されている
