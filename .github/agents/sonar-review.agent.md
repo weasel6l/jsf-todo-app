@@ -94,7 +94,7 @@ mcp_sonarqube_search_sonar_issues_in_projects を呼び出す
 ```
 mcp_sonarqube_search_sonar_issues_in_projects を呼び出す
 - projects: ["{プロジェクトキー}"]
-- severities: ["HIGH", "BLOCKER"]
+- impactSeverities: ["HIGH", "BLOCKER"]
 - issueStatuses: ["OPEN"]
 ```
 
@@ -214,9 +214,33 @@ mcp_sonarqube_get_file_coverage_details を呼び出す
    ```
    mcp_sonarqube_search_sonar_issues_in_projects を呼び出す
    - projects: ["{プロジェクトキー}"]
-   - severities: ["HIGH", "BLOCKER"]
+   - impactSeverities: ["HIGH", "BLOCKER"]
    - issueStatuses: ["OPEN"]
    ```
+
+---
+
+## 7-B. カバレッジ数値のユーザー通知（必須）
+
+`mcp_sonarqube_search_files_by_coverage`（maxCoverage: 100）で取得した結果をもとに、以下のフォーマットでカバレッジ数値を必ずユーザーに報告すること:
+
+```
+---
+[カバレッジ結果]
+
+変更ファイル:
+  src/main/java/.../ExampleListResource.java      : 100%
+  src/main/java/.../ExampleDetailResource.java    : 100%
+  src/main/java/.../ExampleListService.java       : 100%
+  src/main/java/.../ExampleDetailService.java     : 100%
+  src/main/java/.../ExampleRepository.java        : 100%
+  src/main/java/.../ExampleNotFoundException.java : 100%
+
+全変更ファイルのカバレッジ: 100% ✓
+---
+```
+
+カバレッジが 100% 未満のファイルがある場合は `%` 数値・未カバー行数を明示し、対応状況（修正中 or ユーザー確認待ち）も併記する
 
 ---
 
@@ -249,4 +273,5 @@ mcp_sonarqube_get_file_coverage_details を呼び出す
 
 ### 完了報告
 - [ ] 検出された問題数・重大度別の内訳・修正した問題数をユーザーに報告した
+- [ ] **変更ファイルのカバレッジ数値（ファイル別・行カバレッジ %）をユーザーに通知した**
 - [ ] 残存する問題（対応不可・要確認）があれば理由とともに報告した
