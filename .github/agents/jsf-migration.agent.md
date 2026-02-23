@@ -320,31 +320,10 @@ list_memories を呼び出してメモリ一覧を確認する
 
 ---
 
-### Resource クラス（`*Resource.java`）を変更した場合
+### Resource クラス・DTO クラス・ConstraintValidator を変更した場合
 
-- [ ] クラスに `@Tag(name = "...", description = "...")` が付与されている
-- [ ] すべてのエンドポイントメソッドに `@Operation(summary = "...", description = "...")` が付与されている
-- [ ] すべてのエンドポイントメソッドに `@APIResponses` が付与されている（`@ApiResponses` ではない）
-- [ ] 2xx 系 `@APIResponse` に `content = @Content(schema = @Schema(implementation = ...))` が付与されている
-- [ ] `@PathParam` / `@QueryParam` 引数に `@Parameter` が付与されている
-- [ ] `@POST` / `@PUT` のリクエスト引数に `@RequestBody` が付与されている
-- [ ] `@RequestBody` に `content = @Content(schema = @Schema(implementation = ...))` が付与されている
-
----
-
-### DTO クラス（`*Request.java` / `*Response.java`）を変更した場合
-
-- [ ] クラスに `@Schema(description = "...")` が付与されている
-- [ ] すべてのフィールドに `@Schema(description = "...", example = "...")` が付与されている
-- [ ] 必須フィールドに `required = true` が付与されている
-- [ ] 文字列フィールドに `maxLength` がバリデーション制約と一致して付与されている
-
----
-
-### カスタム ConstraintValidator を追加した場合
-
-- [ ] 制約アノテーション・ConstraintValidator 実装・エラーメッセージ定義がすべて揃っている
-- [ ] 対応する `{制約名}ValidatorTest` が作成されている
+`api-implementation` スキルの「コミット前の自己チェック」セクションを参照し、
+すべての項目が通過していることを確認すること。
 
 ---
 
