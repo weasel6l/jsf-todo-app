@@ -51,8 +51,8 @@
 			"mvn clean test": true,
 			"mvn clean compile": true,
 			"mvn dependency:resolve": true,
+			"mvn dependency:tree": true,
 			"mvn test": true,
-			"mvn \"-Dtest=TodoListResourceTest,TodoDetailResourceTest\"": true,
 			// Tomcat 起動
 			"mvn tomcat7:run": true,
 			// Git 操作
@@ -67,9 +67,25 @@
 			// Node / パッケージマネージャー
 			"npm": true,
 			"pnpm": true,
-			// PowerShell ユーティリティ
+			// PowerShell ユーティリティ（ファイル操作・確認系）
 			"Test-Path": true,
-			"ForEach-Object": true
+			"ForEach-Object": true,
+			// PowerShell ファイル検索・品質チェック
+			// Javadoc 句点・HTML タグ・1行 Javadoc・末尾改行の確認で多用する
+			"Get-ChildItem": true,
+			"Select-String": true,
+			"Where-Object": true,
+			"Write-Output": true,
+			"Write-Host": true,
+			// PowerShell UTF-8 BOM なしファイル作成
+			// api-implementation スキルが要求するエンコーディングで新規 Java ファイルを作成するために必要
+			"[System.IO.File]::": true,
+			"[System.Text.UTF8Encoding]::": true,
+			// PowerShell 変数代入（ファイルバイト列の末尾改行確認などで使用）
+			"$b = ": true,
+			"$enc = ": true,
+			"$c = ": true,
+			"$ng = ": true
 		}
 	}
 }
