@@ -93,7 +93,7 @@ feat(repository): ExampleRepository を TDD で実装
 feat(service): ExampleListService を TDD で実装
 feat(resource): ExampleListResource を TDD で実装
 feat(dto): ExampleAddRequest / ExampleAddResponse DTO を追加
-fix(service): 完了済み xxxxx の削除時に例外が発生する問題を修正
+fix(service): 完了済み FooData の削除時に例外が発生する問題を修正
 refactor(service): ExampleListService のバリデーションロジックを抽出
 chore(pom): Helidon MP 2.6.11 に依存を更新
 test(service): ExampleDetailService の異常系テストを追加
