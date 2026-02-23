@@ -12,7 +12,17 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 - **テスト実行は、エージェントが新規作成したテストクラスのみを対象とする**
   - `mvn test` 単体（全テスト実行）は禁止する
   - 必ず `-Dtest={新規作成したテストクラス名}` オプションを指定してテストを実行すること
-  - 複数クラスを対象にする場合はカンマ区切りで指定する（例: `-Dtest=FooResourceTest,BarResourceTest`）
+  - 複数クラスを対象にする場合はカンマ区切りで指定する（例: `"-Dtest=FooResourceTest,BarResourceTest"`）
+  - **PowerShell では `-Dtest=` を引用符で囲むこと**（カンマがパイプ等に誤解釈される）
+
+    ```powershell
+    # 正しい書き方（引用符あり）
+    mvn test "-Dtest=FooResourceTest"
+    mvn test "-Dtest=FooResourceTest,BarResourceTest"
+
+    # NG（引用符なし・カンマ区切りは PowerShell でパースエラーになる）
+    mvn test -Dtest=FooResourceTest,BarResourceTest
+    ```
 
 ### TDD サイクル（必ず以下の順序を守ること）
 
