@@ -70,6 +70,11 @@
 			// PowerShell ユーティリティ（ファイル操作・確認系）
 			"Test-Path": true,
 			"ForEach-Object": true,
+			// SonarQube 静的解析
+			// sonar-scanner-cli の実行（Docker 経由）・SonarQube API の確認で使用
+			"docker run": true,
+			"docker start": true,
+			"curl.exe": true,
 			// PowerShell ファイル検索・品質チェック
 			// Javadoc HTML タグ・1行 Javadoc・末尾改行の確認で多用する
 			"Get-ChildItem": true,
@@ -86,6 +91,15 @@
 			"$enc = ": true,
 			"$c = ": true,
 			"$ng = ": true,
+			// SonarQube API レスポンス処理で使用する変数・コマンド
+			"$json = ": true,
+			"$r = ": true,
+			"$resp = ": true,
+			"$all = ": true,
+			"$out = ": true,
+			"ConvertFrom-Json": true,
+			"Out-File": true,
+			"foreach (": true,
 			// PowerShell 汎用コマンド
 			"Set-Location": true,
 			"Get-Content": true,
