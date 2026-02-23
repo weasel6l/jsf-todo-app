@@ -44,12 +44,14 @@ tools:
 
 ## 2. サブエージェント構成
 
-マイグレーション作業は以下の 3 つのサブエージェントに分割される
+マイグレーション作業は以下のサブエージェントに分割される
 
 | サブエージェント | 責務 | 参照スキル |
 |---|---|---|
 | `jsf-analysis` | 既存 JSF コードの調査・分析・Serena Memory への永続化 | — |
+| `test-data-designer` | テストシナリオ・テストデータの設計と Serena Memory への保存 | `tdd-java` |
 | `api-development` | Helidon MP REST API の TDD 実装 | `api-implementation`, `tdd-java` |
+| `behavior-verifier` | JSF 挙動と API 挙動の同一性検証 | `api-implementation` |
 | `commit-review` | 品質チェック（Definition of Done）・コミット実行 | `api-implementation`, `git-commit` |
 
 ---
@@ -68,15 +70,33 @@ tools:
 
 > **スキップ条件**: Serena Memory に既に分析結果が保存されている場合はこのフェーズをスキップしてよい
 
+### フェーズ 1.5: テストデータ設計
+
+> **エージェント切り替え**: `test-data-designer` エージェントに切り替えてからこのフェーズを実行すること
+
+1. `test-data-designer` エージェントで各 API エンドポイントのテストシナリオを設計する
+2. 正常系・異常系・境界値のテストデータが Serena Memory に保存されていることを確認する
+
+> **スキップ条件**: Serena Memory にテストデータ設計結果が既に保存されている場合はスキップしてよい
+
 ### フェーズ 2: API 実装
 
 > **エージェント切り替え**: `api-development` エージェントに切り替えてからこのフェーズを実行すること
 
 1. `api-development` エージェントで REST API を TDD で実装する
 2. 1 エンドポイントずつ Red → Green → Refactor サイクルを回す
-3. 実装完了後、次のフェーズへ進む
+3. テストデータ設計結果（Serena Memory）を参照してテストケースを実装する
+4. 実装完了後、次のフェーズへ進む
 
-### フェーズ 3: 品質チェック・コミット
+### フェーズ 3: 振る舞い検証
+
+> **エージェント切り替え**: `behavior-verifier` エージェントに切り替えてからこのフェーズを実行すること
+
+1. `behavior-verifier` エージェントで JSF の挙動と API の挙動を照合する
+2. 同一性チェックリストをすべて通過させる
+3. 差異が発見された場合は `api-development` エージェントに差し戻す
+
+### フェーズ 4: 品質チェック・コミット
 
 > **エージェント切り替え**: `commit-review` エージェントに切り替えてからこのフェーズを実行すること
 
