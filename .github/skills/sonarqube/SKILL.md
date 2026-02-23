@@ -131,11 +131,11 @@ language: ["java"]
 
 ### `mcp_sonarqube_search_files_by_coverage`
 
-カバレッジが低いファイルを検索する（カバレッジ改善の対象特定に使用）
+カバレッジが低いファイルを検索する（カバレッジ改善の対象特定に使用）。**100% 未満のファイルを特定する場合は `maxCoverage: 99` を指定する**
 
 ```
 projectKey: "{プロジェクトキー}"
-maxCoverage: 80  # 80% 未満のファイルを取得
+maxCoverage: 99  # 100% 未満のファイルを取得
 ```
 
 ---
@@ -233,7 +233,43 @@ log.debug("debug: {}", value);
 
 ---
 
-## 5. 解析結果の再確認
+## 5. カバレッジ 100% 達成手順
+
+**変更ファイルのテストカバレッジは 100% を達成していなければならない。100% に到達するまでテストを追加し続けることを必須とする**
+
+### カバレッジ不足の確認
+
+```
+# 100% 未満のファイルを特定する
+mcp_sonarqube_search_files_by_coverage:
+  projectKey: "{プロジェクトキー}"
+  maxCoverage: 99
+
+# 特定ファイルの未カバー行・ブランチを確認する
+mcp_sonarqube_get_file_coverage_details:
+  key: "{ファイルのキー}"
+```
+
+### テスト追加の手順
+
+1. `mcp_sonarqube_get_file_coverage_details` でカバーされていない行・ブランチを特定する
+2. 特定したケースに対して `tdd-java` スキルの規約に従いテストを追加する
+3. `mvn test "-Dtest={テストクラス名}"` でテストが Green であることを確認する
+4. Maven 再ビルド・ sonar-scanner-cli 再解析を実施する
+5. `mcp_sonarqube_search_files_by_coverage`（maxCoverage: 99）で 100% 未満のファイルがなくなるまで手順 1～4 を繰り返す
+
+### カバレッジ 100% が技術的に困難なケース
+
+以下のケースはユーザーに報告し、対応方針を確認する:
+
+- フレームワーク内部が介在する例外パスで実際のテストが不可能な場合
+- Lombok 生成コード（`@Data`・`@Builder` 等）によるカバレッジブランチ
+
+**`sonar.exclusions` へのファイル追加による除外は禁止**
+
+---
+
+## 6. 解析結果の再確認
 
 修正後は以下の手順で解析結果を再確認する
 
@@ -248,3 +284,5 @@ severities: ["HIGH", "BLOCKER"]
 ```
 
 BLOCKER / HIGH がゼロであることを確認すること
+
+4. `mcp_sonarqube_search_files_by_coverage`（maxCoverage: 99）でカバレッジ 100% 未満のファイルがゼロであることを確認する
