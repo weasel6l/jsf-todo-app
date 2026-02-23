@@ -1,0 +1,75 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// ファイルエンコーディング (pom.xml の UTF-8 設定に合わせる)
+		"files.encoding": "utf8",
+		// エクスプローラーからビルド成果物を非表示
+		"files.exclude": {
+			"target/": true,
+			"node_modules/": true,
+			"playwright-report/": true,
+			"test-results/": true
+		},
+		// 検索対象からビルド成果物を除外 (検索高速化)
+		"search.exclude": {
+			"target/": true,
+			"node_modules/": true,
+			"playwright-report/": true,
+			"test-results/": true,
+			"package-lock.json": true
+		},
+		// Java / Maven 設定
+		// pom.xml の変更を自動検出してクラスパスを更新する
+		"java.configuration.updateBuildConfiguration": "automatic",
+		// Java ソースバージョン (pom.xml の maven.compiler.source に合わせる)
+		"java.compile.nullAnalysis.mode": "automatic",
+		// エディター設定
+		"editor.formatOnSave": true,
+		"[java]": {
+			"editor.tabSize": 4,
+			"editor.insertSpaces": true
+		},
+		"[typescript]": {
+			"editor.tabSize": 2,
+			"editor.insertSpaces": true
+		},
+		"[xml]": {
+			"editor.tabSize": 4,
+			"editor.insertSpaces": true
+		},
+		// Copilot エージェントがターミナルコマンドを自動承認するリスト
+		"chat.tools.terminal.autoApprove": {
+			// Maven ビルド
+			"mvn clean": true,
+			"mvn compile": true,
+			"mvn package": true,
+			"mvn clean package": true,
+			"mvn clean test": true,
+			"mvn clean compile": true,
+			"mvn dependency:resolve": true,
+			"mvn test": true,
+			"mvn \"-Dtest=TodoListResourceTest,TodoDetailResourceTest\"": true,
+			// Tomcat 起動
+			"mvn tomcat7:run": true,
+			// Git 操作
+			"git add": true,
+			"git commit": true,
+			"git status": true,
+			"git log": true,
+			"git diff": true,
+			// Playwright E2E テスト
+			"npx playwright": true,
+			"node test-server.js": true,
+			// Node / パッケージマネージャー
+			"npm": true,
+			"pnpm": true,
+			// PowerShell ユーティリティ
+			"Test-Path": true,
+			"ForEach-Object": true
+		}
+	}
+}
