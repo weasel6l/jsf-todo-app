@@ -29,11 +29,13 @@ description: JUnit 5 を用いた TDD 実装ルール。デトロイト派・@Ne
 #### フェーズ 1: Red（テストを書く）
 
 1. テストクラスにテストメソッドを 1 件だけ追加する
-2. 対応する実装クラスはまだ作成しないか、コンパイルが通る最小のスタブのみ作成する
+2. 対応する実装クラスはスタブ（メソッドシグネチャのみ・本体は例外 throw）として作成する
+   - **コンパイルエラーの状態も Red とみなす**（テストクラスがコンパイルできない場合も Red）
+   - スタブの本体: `throw new UnsupportedOperationException("not implemented");`
 3. 以下のコマンドでテストが **失敗（Red）** であることを必ず確認する
 
 ```powershell
-mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
+mvn test "-Dtest={新規作成したテストクラス名}" 2>&1 | Select-String -Pattern "FAIL|ERROR|BUILD FAILURE"
 ```
 
 #### フェーズ 2: Green（最小限の実装をする）
@@ -42,7 +44,7 @@ mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -
 2. 以下のコマンドで **テストが Green** であることを必ず確認する
 
 ```powershell
-mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
+mvn test "-Dtest={新規作成したテストクラス名}" 2>&1 | Select-String -Pattern "Tests run.*Failures.*Errors|BUILD"
 ```
 
 3. `Tests run: N, Failures: 0, Errors: 0` かつ `BUILD SUCCESS` を確認してから次へ進む
@@ -51,7 +53,7 @@ mvn test -Dtest={新規作成したテストクラス名} 2>&1 | Select-String -
 
 1. 重複除去・責務整理を行う
 2. 適用すべき他のスキル（コーディング規約・Javadoc 規約等）に準拠させる
-3. 再度 `mvn test -Dtest={新規作成したテストクラス名}` を実行し、Green が保たれていることを確認する
+3. 再度 `mvn test "-Dtest={新規作成したテストクラス名}"` を実行し、Green が保たれていることを確認する
 4. Refactor は省略してはならない
 
 ---
