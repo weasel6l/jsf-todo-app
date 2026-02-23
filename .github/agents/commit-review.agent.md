@@ -76,6 +76,9 @@ tools:
 - [ ] `target/` ディレクトリがステージに含まれていない
 - [ ] IDE 設定ファイル（`.idea/`, `*.iml` 等）がステージに含まれていない
 - [ ] `.gitignore` がステージに含まれていない
+- [ ] `sonar-project.properties` がステージに含まれていない（`git-commit` スキル Section 8）
+- [ ] `lombok.config` がステージに含まれていない（`git-commit` スキル Section 8）
+- [ ] `pom.xml` に JaCoCo の追加が含まれている場合、そのコミットを行っていない（`git-commit` スキル Section 8）
 
 ---
 
