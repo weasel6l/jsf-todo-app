@@ -181,10 +181,6 @@ list_memories を呼び出してメモリ一覧を確認する
 2. Javadoc の品質チェックを実行する（以下をすべて 0 件で通過させること）
 
    ```powershell
-   # 句点（。）チェック
-   Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
-   Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
-
    # HTML タグ（Javadoc 行のみ対象）チェック
    Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
    Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '<[a-z][a-z0-9]*' | Where-Object { $_.Line -match '^\s*\*' }
@@ -276,12 +272,6 @@ list_memories を呼び出してメモリ一覧を確認する
   Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern '/\*\* .+ \*/'
   ```
 
-- [ ] Javadoc 行末に句点（。）がない
-
-  ```powershell
-  Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
-  ```
-
 - [ ] ワイルドカードインポート（`import ... *`）を使用していない
 
 - [ ] Javadoc に HTML タグを使用していない
@@ -299,12 +289,6 @@ list_memories を呼び出してメモリ一覧を確認する
 
   ```powershell
   Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern '/\*\* .+ \*/'
-  ```
-
-- [ ] Javadoc 行末に句点（。）がない
-
-  ```powershell
-  Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
   ```
 
 - [ ] Javadoc に HTML タグを使用していない
