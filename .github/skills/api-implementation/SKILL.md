@@ -1,6 +1,6 @@
 ---
 name: api-implementation
-description: Helidon MP を用いた REST API の実装ルール。コーディング規約・Javadoc 規約・バリデーション規約を含む。JSFからのマイグレーション時のバックエンド API 実装に使用する。
+description: Helidon MP を用いた REST API の実装ルール。コーディング規約・Javadoc 規約・バリデーション規約を含む。JSFからのマイグレーション時のバックエンド API 実装に使用する
 ---
 
 ## 1. コーディング規約
@@ -29,8 +29,8 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 
 > **警告（PowerShell here-string の落とし穴）**: `@'...'@` 形式の here-string は
 > `'@` の直前の改行を含まない。コンテンツの末尾に明示的に `\n` を追加しないと
-> 末尾改行がつかない。
-> 正しい書き方: 文字列末尾の `}` の後に空行または `\n` を追加する。
+> 末尾改行がつかない
+> 正しい書き方: 文字列末尾の `}` の後に空行または `\n` を追加する
 >
 > **NG**: `$c = @'\n...}\n'@`  （`'@`直前に内容がない行 = 改行なし）
 >
@@ -38,8 +38,8 @@ description: Helidon MP を用いた REST API の実装ルール。コーディ�
 
 #### 末尾改行の検証（コミット前に必ず実行する）
 
-新規作成・変更したすべての Java ファイルについて、以下のコマンドで末尾バイトを検証すること。
-`LastByte=10`（LF）でない場合は修正してからコミットすること。
+新規作成・変更したすべての Java ファイルについて、以下のコマンドで末尾バイトを検証すること
+`LastByte=10`（LF）でない場合は修正してからコミットすること
 
 ```powershell
 # 単一ファイルの確認
@@ -139,11 +139,11 @@ $b = [System.IO.File]::ReadAllBytes("path\to\File.java")
 #### CDI プロキシ要件と Lombok の組み合わせ（重要）
 
 CDI はランタイムにプロキシクラスを生成するため、
-**管理 Bean（`@RequestScoped` / `@ApplicationScoped` 等）には引数なしコンストラクタが必須**。
+**管理 Bean（`@RequestScoped` / `@ApplicationScoped` 等）には引数なしコンストラクタが必須**
 
 `@RequiredArgsConstructor` で `final` フィールドを持つクラスに引数なしコンストラクタを追加する場合、
-**`@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)` を必ず使用すること**。
-`force = true` がないと `final` フィールドが初期化されないとしてコンパイルエラーになる。
+**`@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)` を必ず使用すること**
+`force = true` がないと `final` フィールドが初期化されないとしてコンパイルエラーになる
 
 ```java
 // OK: CDI プロキシ要件を満たすパターン
@@ -163,64 +163,47 @@ public class TodoListService {
 ---
 
 ## 2. Javadoc 規約
-
 - クラス、メソッド、メンバには必ず Javadoc を記載する
-  - テストクラスやテストメソッドも例外ではない
-
-- 使用可能な Javadoc タグは以下のみに限定する  
-  - `@param`  
-  - `@return`  
+- 使用可能な Javadoc タグは以下のみに限定する
+  - `@param`
+  - `@return`
   - `@throws`
-
-- 記述はプレーンテキストを基本とし、HTML タグの使用は禁止する
-
+- HTML タグは使用しない
 - 文体は常体とし、敬語は使用しない
-- **Javadoc の文末に句点（。）を付けてはならない**
-  - 「した。」「保持する。」「返す。」のような書き方は禁止する
-  - コミット前に以下のコマンドで0件であることを必ず確認する
-
-    ```powershell
-    # Javadoc 行末の句点を検出する (0 件 = OK)
-    # src/main と src/test の両方を対象にする
-    Get-ChildItem -Path "src\main\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
-    Get-ChildItem -Path "src\test\java" -Filter "*.java" -Recurse | Select-String -Pattern "\*\s.*\u3002\s*$" | Where-Object { $_.Line -match '^\s*\*' }
-    ```
-
-- 実装内容の説明ではなく、
-  「責務」「前提条件」「事後条件」を記載すること
+- **文末に句点（。）を付けてはならない**
+  - コミット前に以下のコマンドで 0 件であることを確認する
+```powershell
+    Get-ChildItem -Path "src\main\java", "src\test\java" -Filter "*.java" -Recurse |
+        Select-String -Pattern "\*\s.*。\s*$" |
+        Where-Object { $_.Line -match '^\s*\*' }
+```
+- 実装内容の説明ではなく、「責務」「前提条件」「事後条件」を記載する
   - テスト方針・実装方式（「デトロイト派」「実オブジェクトを使用」等）も記載しない
-  - このような情報はスキル文書・設計文書で管理すること
-
-- Javadoc コメントは `/**` で開始すること  
-  - `/* ... */` 形式のコメントは使用しない
-
-- Javadoc コメントは必ず複数行で記載すること  
-  - 1 行のみの Javadoc は禁止する
-  - **この規則はフィールド・メンバ変数にも例外なく適用する**
-    - `/** 説明 */` のようなフィールドの 1 行 Javadoc も違反である
+- `/**` で開始し、`/* ... */` 形式は使用しない
+- 必ず複数行で記載する（フィールドも含む）
 
 ### 記載例
 
+OK
 ```java
 /**
- * OK: 複数行で記載する
+ * 複数行で記載する
  * 説明は簡潔かつ明確に書く
  */
 ```
-
-```java
-/** NG: 1行で記載しない */
-```
-
 ```java
 /**
- * OK: フィールドも複数行で記載する
+ * フィールドも複数行で記載する
  */
 private final TodoRepository repository;
 ```
 
+NG
 ```java
-/** NG: フィールドの1行Javadocも禁止 */
+/** 1行で記載しない */
+```
+```java
+/** フィールドの1行Javadocも禁止 */
 private final TodoRepository repository;
 ```
 
