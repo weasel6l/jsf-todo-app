@@ -152,6 +152,7 @@
 | コーディング規約・Javadoc 規約・Lombok・DI・バリデーション・OpenAPI アノテーション | `api-implementation` |
 | TDD サイクル・テスト構造・Given-When-Then | `tdd-java` |
 | コミット粒度・メッセージ形式・コミット除外ファイル | `git-commit` |
+| SonarQube MCP による静的解析・問題修正手順 | `sonarqube` |
 
 ---
 
