@@ -85,7 +85,16 @@
 			"$b = ": true,
 			"$enc = ": true,
 			"$c = ": true,
-			"$ng = ": true
+			"$ng = ": true,
+			// PowerShell 汎用コマンド
+			"Set-Location": true,
+			"Get-Content": true,
+			"Set-Content": true,
+			"Copy-Item": true,
+			"Remove-Item": true,
+			"New-Item": true,
+			"Push-Location": true,
+			"Pop-Location": true
 		}
 	}
 }
