@@ -21,6 +21,24 @@ description: SonarQube MCP を使用した静的解析の実施方法。解析�
   ```
 
 - [ ] プロジェクトキーを確認する（`sonar-project.properties` の `sonar.projectKey` の値）
+- [ ] `sonar-project.properties` がプロジェクトルートに存在すること
+
+  存在しない場合は以下の内容で新規作成する（既存 JSF コードを `sonar.exclusions` で除外することが重要）:
+
+  ```properties
+  sonar.projectKey=jsf-todo-app
+  sonar.projectName=JSF Todo App
+  sonar.sources=src/main/java
+  sonar.tests=src/test/java
+  sonar.java.binaries=target/classes
+  sonar.exclusions=src/main/webapp/**,src/main/java/com/example/todo/bean/**,src/main/java/com/example/todo/model/**
+  sonar.test.exclusions=src/test/java/com/example/todo/bean/**,src/test/java/com/example/todo/model/**
+  sonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+  ```
+
+  > **JaCoCo が `pom.xml` に設定されていない場合:** `mvn test` だけではカバレッジレポートが生成されず、SonarQube のカバレッジが 0% になる。`pom.xml` に `jacoco-maven-plugin 0.8.11` が設定されていることを確認すること
+
+- [ ] SonarQube トークンを確認する（`mcp.json` の `SONARQUBE_TOKEN`）
 - [ ] `target/classes/` ディレクトリが存在すること（Maven ビルド済みであること）
 
   存在しない場合は以下をプロジェクトルートで実行する:
@@ -47,7 +65,28 @@ mvn clean package -DskipTests -q
 
 ### ステップ 2: sonar-scanner-cli による解析送信
 
-トークンは MCP 設定（`mcp.json`）の `SONAR_TOKEN` 環境変数、または SonarQube の `http://localhost:9000/account/security` で確認・発行する
+トークンは MCP 設定（`mcp.json`）の `SONARQUBE_TOKEN` 環境変数、または SonarQube の `http://localhost:9000/account/security` で確認・発行する
+
+> **`mcp.json` のトークン確認方法:**
+> ```powershell
+> Get-Content "$env:APPDATA\Code\User\mcp.json" | Select-String "SONARQUBE_TOKEN" -Context 0,1
+> ```
+
+#### `sonar-project.properties` が存在する場合（推奨）
+
+プロジェクトルートに `sonar-project.properties` がある場合、すべての解析オプションが自動読み込みされるため、コマンドを大幅に簡略化できる:
+
+```powershell
+docker run --rm `
+  -e SONAR_HOST_URL="http://host.docker.internal:9000" `
+  -e SONAR_TOKEN="{SonarQube トークン}" `
+  -v "{プロジェクトルートの絶対パス（Windows は C:/Users/... 形式）}:/usr/src" `
+  sonarsource/sonar-scanner-cli
+```
+
+**注意**: Windows パスのボリュームマウントは `C:\Users\...` ではなく `C:/Users/...`（スラッシュ区切り）を使用すること
+
+#### `sonar-project.properties` が存在しない場合
 
 ```powershell
 docker run --rm `
@@ -61,8 +100,6 @@ docker run --rm `
   "-Dsonar.java.binaries=target/classes" `
   "-Dsonar.exclusions=src/main/webapp/**,{既存 JSF Bean パッケージのパス}/**"
 ```
-
-プロジェクトルートに `sonar-project.properties` が存在する場合、`-Dsonar.projectKey` 以降のオプションは省略できる。`sonar.exclusions` で既存 JSF コードを除外しているため、新規実装した API コードのみが解析対象になる。
 
 末尾に `EXECUTION SUCCESS` が表示されれば解析完了
 
@@ -80,8 +117,9 @@ issueStatuses: ["OPEN"]
 # 特定ファイルのみに絞り込む場合は files を追加
 files: ["{確認したいファイルのパス}"]
 
-# 重大度で絞り込む場合は severities を指定
-severities: ["HIGH", "BLOCKER"]
+# 重大度で絞り込む場合は impactSeverities を指定（SonarQube 10.x 以降）
+# HIGH / MEDIUM / LOW / BLOCKER / INFO が有効
+impactSeverities: ["HIGH", "BLOCKER"]
 
 # セキュリティ問題のみを確認する場合
 impactSoftwareQualities: ["SECURITY"]
@@ -100,7 +138,8 @@ impactSoftwareQualities: ["SECURITY"]
 |---|---|---|
 | `projects` | `string[]` | 対象プロジェクトキー |
 | `files` | `string[]` | 特定ファイルへの絞り込み（オプション） |
-| `severities` | `string[]` | `INFO` / `LOW` / `MEDIUM` / `HIGH` / `BLOCKER` |
+| `severities` | `string[]` | 旧重大度: `BLOCKER` / `CRITICAL` / `MAJOR` / `MINOR` / `INFO`（SonarQube 9.x 以前との互換） |
+| `impactSeverities` | `string[]` | 新重大度: `BLOCKER` / `HIGH` / `MEDIUM` / `LOW` / `INFO`（SonarQube 10.x 以降推奨） |
 | `impactSoftwareQualities` | `string[]` | `MAINTAINABILITY` / `RELIABILITY` / `SECURITY` |
 | `issueStatuses` | `string[]` | `OPEN` / `CONFIRMED` / `FALSE_POSITIVE` / `ACCEPTED` / `FIXED` |
 
@@ -280,7 +319,7 @@ mcp_sonarqube_get_file_coverage_details:
 ```
 projects: ["{プロジェクトキー}"]
 issueStatuses: ["OPEN"]
-severities: ["HIGH", "BLOCKER"]
+impactSeverities: ["HIGH", "BLOCKER"]
 ```
 
 BLOCKER / HIGH がゼロであることを確認すること
