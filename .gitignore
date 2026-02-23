@@ -15,9 +15,6 @@ target/
 *.iml
 .vscode/
 
-# Serena MCP (エージェントが自動生成するプロジェクト設定)
-.serena/
-
 # OS
 .DS_Store
 Thumbs.db
