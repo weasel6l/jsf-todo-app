@@ -55,8 +55,8 @@ tools:
    - `project_overview` — プロジェクト構成
    - `code_structure` — パッケージ構成
    - `jsf_backing_beans` — マイグレーション対象の Backing Bean 情報
-   - `jsf_views` — 画面一覧（API 設計の基盤情報）
    - `test_scenarios_{画面名}` — 各画面のテストシナリオ（キー名は `jsf_views` の画面一覧に基づく）
+   - `jsf_views` — 画面一覧と API エンドポイント設計（この Memory に API エンドポイント対応表が含まれる）
 
 > メモリが存在しない場合は、**実装を開始してはならない**。`jsf-analysis` および `test-data-designer` エージェントを先に実行する必要があることをユーザーに伝え、作業をここで停止すること
 
