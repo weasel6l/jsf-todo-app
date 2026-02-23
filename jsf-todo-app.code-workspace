@@ -71,7 +71,7 @@
 			"Test-Path": true,
 			"ForEach-Object": true,
 			// PowerShell ファイル検索・品質チェック
-			// Javadoc 句点・HTML タグ・1行 Javadoc・末尾改行の確認で多用する
+			// Javadoc HTML タグ・1行 Javadoc・末尾改行の確認で多用する
 			"Get-ChildItem": true,
 			"Select-String": true,
 			"Where-Object": true,
