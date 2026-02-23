@@ -16,7 +16,7 @@ description: Git コミット運用ルール。コミット粒度・Conventional
 
 ### 機能実装
 
-レイヤーごとに **独立したコミット** とする。1 コミットに複数レイヤーを混在させてはならない。
+レイヤーごとに **独立したコミット** とする。1 コミットに複数レイヤーを混在させてはならない
 
 | 対象 | コミット単位 |
 |---|---|
@@ -64,7 +64,7 @@ description: Git コミット運用ルール。コミット粒度・Conventional
 
 ## 3. コミットメッセージ規約
 
-[Conventional Commits](https://www.conventionalcommits.org/) に準拠する。
+[Conventional Commits](https://www.conventionalcommits.org/) に準拠する
 
 ```
 <type>(<scope>): <subject>
