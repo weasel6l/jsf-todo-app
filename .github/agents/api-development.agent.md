@@ -45,7 +45,8 @@ tools:
 ### 前提条件
 
 - `jsf-analysis` エージェントによるコード分析が完了していること
-- Serena Memory に分析結果が保存されていること
+- `test-data-designer` エージェントによるテストシナリオ設計が完了していること
+- 上記両方の Serena Memory キーが存在すること
 
 ### 手順
 
@@ -55,8 +56,9 @@ tools:
    - `code_structure` — パッケージ構成
    - `jsf_backing_beans` — マイグレーション対象の Backing Bean 情報
    - `jsf_views` — 画面一覧（API 設計の基盤情報）
+   - `test_scenarios_{画面名}` — 各画面のテストシナリオ（キー名は `jsf_views` の画面一覧に基づく）
 
-> メモリが存在しない場合は、`jsf-analysis` エージェントを先に実行するようユーザーに報告する
+> メモリが存在しない場合は、**実装を開始してはならない**。`jsf-analysis` および `test-data-designer` エージェントを先に実行する必要があることをユーザーに伝え、作業をここで停止すること
 
 ---
 
@@ -78,7 +80,29 @@ tools:
 
 ---
 
-## 4. 実装完了後の引き継ぎ
+## 4. 実装完了後の引き継ぎ（必須）
 
-- 実装が完了したら `commit-review` エージェントに品質チェック・コミットを依頼する
-- コミット前チェック（Definition of Done）は `commit-review` エージェントの責務とする
+**実装が完了しても、`commit-review` エージェントを経ずにコミットしてはならない**
+
+1. `commit-review` エージェントへの切り替えをユーザーに依頼する
+2. コミット完了は `commit-review` エージェントの責務とする
+3. 本エージェントが直接 `git add` / `git commit` を実行することは禁止
+
+---
+
+## 5. Definition of Done
+
+**以下の全項目が完了でない限り、このエージェントは「完了」を宣言してはならない**
+
+### 実行確認
+- [ ] `jsf_views` から各画面の `test_scenarios_{画面名}` Memory を読み込み、テストデータ設計に基づいて全エンドポイントを実装した
+- [ ] 全エンドポイントの TDD（Red → Green → Refactor）サイクルを完了した
+- [ ] 全 Resource クラスに OpenAPI アノテーションが付与されている
+- [ ] 全 DTO ・クラスに Javadoc が記述されている
+
+### テスト実行確認
+- [ ] `mvn test` を実行し `BUILD SUCCESS` を確認した
+- [ ] `mvn test` の出力で `Failures: 0, Errors: 0` が確認できた
+
+### 完了報告
+- [ ] 完了メッセージをユーザーに送信した

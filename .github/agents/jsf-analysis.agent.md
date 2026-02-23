@@ -164,3 +164,25 @@ list_memories を呼び出してメモリ一覧を確認する
   - `jsf_navigation` — ナビゲーションルール
   - `jsf_custom_components` — カスタムバリデーター・コンバーター
   - `jsf_models` — Model クラス構造
+
+---
+
+## 6. Definition of Done
+
+**以下の全項目が完了でない限り、このエージェントは「完了」を宣言してはならない**
+
+### 実行確認
+- [ ] `activate_project` を呼び出し、プロジェクトが正常にアクティベートされた
+- [ ] 全 backing bean のアクションメソッドを把握した
+- [ ] 全 XHTML ビューと backing bean のマッピングを把握した
+- [ ] `faces-config.xml` ・ `web.xml` を確認した
+- [ ] セクション 4「分析完了チェックリスト」の全項目を通過した
+
+### Memory 保存確認
+- [ ] `write_memory` で `jsf_backing_beans` キーに内容を保存した
+- [ ] `write_memory` で `jsf_views` キーに内容を保存した
+- [ ] `read_memory` で `jsf_backing_beans` の内容を再読みが“空でない”ことを確認した
+- [ ] `read_memory` で `jsf_views` の内容を再読みが“空でない”ことを確認した
+
+### 完了報告
+- [ ] 完了メッセージをユーザーに送信した
