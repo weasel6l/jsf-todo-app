@@ -89,14 +89,14 @@ description: Git コミット運用ルール。コミット粒度・Conventional
 ### コミットメッセージ例
 
 ```
-feat(repository): TodoRepository を TDD で実装
-feat(service): TodoListService を TDD で実装
-feat(resource): TodoListResource を TDD で実装
-feat(dto): TodoAddRequest / TodoAddResponse DTO を追加
-fix(service): 完了済み Todo の削除時に例外が発生する問題を修正
-refactor(service): TodoListService のバリデーションロジックを抽出
+feat(repository): ExampleRepository を TDD で実装
+feat(service): ExampleListService を TDD で実装
+feat(resource): ExampleListResource を TDD で実装
+feat(dto): ExampleAddRequest / ExampleAddResponse DTO を追加
+fix(service): 完了済み xxxxx の削除時に例外が発生する問題を修正
+refactor(service): ExampleListService のバリデーションロジックを抽出
 chore(pom): Helidon MP 2.6.11 に依存を更新
-test(service): TodoDetailService の異常系テストを追加
+test(service): ExampleDetailService の異常系テストを追加
 ```
 
 ---
