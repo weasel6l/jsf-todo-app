@@ -90,7 +90,10 @@ mvn test "-Dtest={新規作成したテストクラス名}" 2>&1 | Select-String
   - クラス・フィールド・`@BeforeEach` / `@BeforeAll` メソッドにも Javadoc を付与すること
 - テストメソッド名は英語で記述する
 - Given-When-Then 構文を用いてテストを構成する
-- アサーション失敗時に意図が分かるよう、必要に応じて message を記載する
+- アサーション失敗時のメッセージは必ず記載する
+  - JUnit 5 のアサーションメソッドでは**最後の引数**にメッセージを指定する
+    - 例: `assertEquals(expected, actual, "ユーザーIDが一致すること")`
+  - AssertJ（assertThat）はメソッドチェーンの `as()` または `withFailMessage()` で記述する
 - Javadoc・コメントに実装方針・テスト方式（「デトロイト派」「実オブジェクトを使用」等）を記載しない
   - テスト方針はスキル文書で管理する
   - Javadoc の記述対象は「責務・前提条件・事後条件」のみ
