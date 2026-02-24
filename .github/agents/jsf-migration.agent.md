@@ -30,6 +30,11 @@ tools:
   - serena/write_memory
   - serena/edit_memory
   - serena/delete_memory
+  - sonarqube/search_sonar_issues_in_projects
+  - sonarqube/analyze_code_snippet
+  - sonarqube/show_rule
+  - sonarqube/search_files_by_coverage
+  - sonarqube/get_file_coverage_details
 ---
 
 # JSF → フロントエンド + API マイグレーション エージェント（オーケストレーター）
