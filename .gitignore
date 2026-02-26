@@ -18,3 +18,7 @@ target/
 # OS
 .DS_Store
 Thumbs.db
+
+# その他
+.playwright-mcp/
+.github/tasks/
