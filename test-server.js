@@ -8,11 +8,12 @@ const url  = require('url');
 const PORT = 8080;
 
 // ---- インメモリ Todo ストレージ ----
-let todos = [
+const INITIAL_TODOS = [
   { id: 1, title: '買い物をする',      description: 'スーパーで食材を購入する', completed: false },
   { id: 2, title: 'レポートを書く',    description: 'プロジェクトの進捗レポートを完成させる', completed: false },
   { id: 3, title: '運動する',          description: '30分のジョギング', completed: true  },
 ];
+let todos = JSON.parse(JSON.stringify(INITIAL_TODOS));
 let nextId = 4;
 
 // ---- HTML ヘルパー ----
@@ -233,6 +234,14 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && (path === '/' || path === '/index.xhtml')) {
     res.writeHead(302, { Location: '/todos' });
     return res.end();
+  }
+
+  // GET /reset  →  テスト用にデータをリセット
+  if (req.method === 'GET' && path === '/reset') {
+    todos = JSON.parse(JSON.stringify(INITIAL_TODOS));
+    nextId = 4;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    return res.end(JSON.stringify({ status: 'reset', count: todos.length }));
   }
 
   // GET /todos
