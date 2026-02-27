@@ -1,31 +1,34 @@
-# Node
+# Node.js関連
 node_modules/
 npm-debug.log*
 
-# Playwright
+# Playwright関連
 playwright-report/
 test-results/
 .playwright/
 
-# Build
+# ビルド関連
+build/
 target/
 
-# IDE
+# IDE関連
 .idea/
 *.iml
 .vscode/
 
-# OS
+# OS関連
 .DS_Store
 Thumbs.db
 
-# その他
+# 一時ファイル・その他
+*.log
+logs/
 .playwright-mcp/
 .github/tasks/
 
-# SonarQube
+# SonarQube関連
 sonar-scan*.log
 .scannerwork/
 
-# Serena Memory
+# Serena Memory関連
 .serena/
