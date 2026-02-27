@@ -1,0 +1,124 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// サイドバー・タイトルバーの色をカスタム（暗い黄色）
+		"workbench.colorCustomizations": {
+			"activityBar.background": "#4a3a00",
+			"activityBar.activeBackground": "#5c4700",
+			"activityBar.foreground": "#ffffff",
+			"titleBar.activeBackground": "#4a3a00",
+			"titleBar.inactiveBackground": "#5c4700",
+			"titleBar.activeForeground": "#ffffff",
+			"titleBar.inactiveForeground": "#f0e68c"
+		},
+		// ファイルエンコーディング (pom.xml の UTF-8 設定に合わせる)
+		"files.encoding": "utf8",
+		// エクスプローラーからビルド成果物を非表示
+		"files.exclude": {
+			"target/": true,
+			"node_modules/": true,
+			"playwright-report/": true,
+			"test-results/": true
+		},
+		// 検索対象からビルド成果物を除外 (検索高速化)
+		"search.exclude": {
+			"target/": true,
+			"node_modules/": true,
+			"playwright-report/": true,
+			"test-results/": true,
+			"package-lock.json": true
+		},
+		// Java / Maven 設定
+		// pom.xml の変更を自動検出してクラスパスを更新する
+		"java.configuration.updateBuildConfiguration": "automatic",
+		// Java ソースバージョン (pom.xml の maven.compiler.source に合わせる)
+		"java.compile.nullAnalysis.mode": "automatic",
+		// エディター設定
+		"editor.formatOnSave": true,
+		"[java]": {
+			"editor.tabSize": 4,
+			"editor.insertSpaces": true
+		},
+		"[typescript]": {
+			"editor.tabSize": 2,
+			"editor.insertSpaces": true
+		},
+		"[xml]": {
+			"editor.tabSize": 4,
+			"editor.insertSpaces": true
+		},
+		// Copilot エージェントがターミナルコマンドを自動承認するリスト
+		"chat.tools.terminal.autoApprove": {
+			// Maven ビルド
+			"mvn clean": true,
+			"mvn compile": true,
+			"mvn package": true,
+			"mvn clean package": true,
+			"mvn clean test": true,
+			"mvn clean compile": true,
+			"mvn dependency:resolve": true,
+			"mvn dependency:tree": true,
+			"mvn test": true,
+			// Tomcat 起動
+			"mvn tomcat7:run": true,
+			// Git 操作
+			"git add": true,
+			"git commit": true,
+			"git status": true,
+			"git log": true,
+			"git diff": true,
+			// Playwright E2E テスト
+			"npx playwright": true,
+			"node test-server.js": true,
+			// Node / パッケージマネージャー
+			"npm": true,
+			"pnpm": true,
+			// PowerShell ユーティリティ（ファイル操作・確認系）
+			"Test-Path": true,
+			"ForEach-Object": true,
+			// SonarQube 静的解析
+			// sonar-scanner-cli の実行（Docker 経由）・SonarQube API の確認で使用
+			"docker run": true,
+			"docker start": true,
+			"curl.exe": true,
+			// PowerShell ファイル検索・品質チェック
+			// Javadoc HTML タグ・1行 Javadoc・末尾改行の確認で多用する
+			"Get-ChildItem": true,
+			"Select-String": true,
+			"Where-Object": true,
+			"Write-Output": true,
+			"Write-Host": true,
+			// PowerShell UTF-8 BOM なしファイル作成
+			// api-implementation スキルが要求するエンコーディングで新規 Java ファイルを作成するために必要
+			"[System.IO.File]::": true,
+			"[System.Text.UTF8Encoding]::": true,
+			// PowerShell 変数代入（ファイルバイト列の末尾改行確認などで使用）
+			"$b = ": true,
+			"$enc = ": true,
+			"$c = ": true,
+			"$ng = ": true,
+			// SonarQube API レスポンス処理で使用する変数・コマンド
+			"$json = ": true,
+			"$r = ": true,
+			"$resp = ": true,
+			"$all = ": true,
+			"$out = ": true,
+			"ConvertFrom-Json": true,
+			"Out-File": true,
+			"foreach (": true,
+			// PowerShell 汎用コマンド
+			"Set-Location": true,
+			"Get-Content": true,
+			"Set-Content": true,
+			"Copy-Item": true,
+			"Remove-Item": true,
+			"New-Item": true,
+			"Push-Location": true,
+			"Pop-Location": true
+		}
+	}
+}
