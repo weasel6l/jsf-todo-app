@@ -87,6 +87,13 @@
             <artifactId>helidon-microprofile-tests-junit5</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- JUnit Platform Launcher (jqwik エンジン検出に必要) -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.9.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -142,6 +149,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M9</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Properties.java</include>
+                    </includes>
+                    <useJUnitPlatform>true</useJUnitPlatform>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -169,6 +183,31 @@
                         <version>1.1.0</version>
                     </dependency>
                 </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>jp.co.example.ec.api.cart.CartService</param>
+                        <param>jp.co.example.ec.api.order.OrderService</param>
+                        <param>jp.co.example.ec.api.product.ProductCatalogService</param>
+                        <param>jp.co.example.ec.api.cart.CartResource</param>
+                        <param>jp.co.example.ec.api.order.OrderResource</param>
+                        <param>jp.co.example.ec.api.product.ProductResource</param>
+                        <param>jp.co.example.ec.api.ConstraintViolationExceptionMapper</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>jp.co.example.ec.api.*Test</param>
+                        <param>jp.co.example.ec.api.*Properties</param>
+                    </targetTests>
+                    <mutators>
+                        <mutator>DEFAULTS</mutator>
+                    </mutators>
+                    <outputFormats>
+                        <outputFormat>HTML</outputFormat>
+                        <outputFormat>XML</outputFormat>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                    <timeoutConstant>10000</timeoutConstant>
+                    <mutationThreshold>80</mutationThreshold>
+                </configuration>
             </plugin>
         </plugins>
     </build>
