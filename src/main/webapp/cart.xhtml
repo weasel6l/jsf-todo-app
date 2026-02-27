@@ -1,0 +1,72 @@
+﻿<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+<html xmlns=\"http://www.w3.org/1999/xhtml\"
+      xmlns:h=\"http://xmlns.jcp.org/jsf/html\"
+      xmlns:f=\"http://xmlns.jcp.org/jsf/core\">
+<h:head>
+    <title>EC Store - Shopping Cart</title>
+    <h:outputStylesheet name=\"style.css\" />
+</h:head>
+<h:body>
+    <h:form>
+        <div class=\"header\">
+            <h1>Shopping Cart</h1>
+            <p>
+                <h:commandLink action=\"index.xhtml?faces-redirect=true\" value=\"Back to Products\" />
+            </p>
+        </div>
+
+        <div class=\"cart-content\">
+            <h:panelGroup rendered=\"#{cartBean.isEmpty()}\">
+                <p>Your cart is empty.</p>
+                <h:commandLink action=\"index.xhtml?faces-redirect=true\" value=\"Continue Shopping\" />
+            </h:panelGroup>
+
+            <h:panelGroup rendered=\"#{not cartBean.isEmpty()}\">
+                <h2>Cart Items</h2>
+                <h:dataTable var=\"item\" value=\"#{cartBean.items}\" border=\"1\">
+                    <h:column>
+                        <f:facet name=\"header\">Product Name</f:facet>
+                        <h:outputText value=\"#{item.product.name}\" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name=\"header\">Price</f:facet>
+                        <h:outputText value=\"#{item.product.price}\" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name=\"header\">Quantity</f:facet>
+                        <h:outputText value=\"#{item.quantity}\" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name=\"header\">Subtotal</f:facet>
+                        <h:outputText value=\"#{item.subtotal}\" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name=\"header\">Action</f:facet>
+                        <h:commandButton value=\"Remove\"
+                                          action=\"#{cartBean.removeFromCart(item.product.id)}\" />
+                    </h:column>
+                </h:dataTable>
+
+                <div class=\"cart-summary\">
+                    <h3>Cart Summary</h3>
+                    <p>Total Items: <h:outputText value=\"#{cartBean.itemCount}\" /></p>
+                    <p>Total Price: \$<h:outputText value=\"#{cartBean.total}\" /></p>
+                </div>
+
+                <div class=\"cart-actions\">
+                    <h:commandButton value=\"Clear Cart\"
+                                      action=\"#{cartBean.clear()}\" />
+                    <h:commandButton value=\"Proceed to Checkout\"
+                                      action=\"#{orderBean.createOrder(cartBean)}\"
+                                      onclick=\"alert('Order created! Order Number: ' + '#{orderBean.orderNumber}'); return false;\" />
+                </div>
+            </h:panelGroup>
+        </div>
+
+        <div class=\"footer\">
+            <p>&copy; 2026 EC Store. All rights reserved.</p>
+        </div>
+    </h:form>
+</h:body>
+</html>

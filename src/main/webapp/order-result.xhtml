@@ -1,0 +1,41 @@
+﻿<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+<html xmlns=\"http://www.w3.org/1999/xhtml\"
+      xmlns:h=\"http://xmlns.jcp.org/jsf/html\"
+      xmlns:f=\"http://xmlns.jcp.org/jsf/core\">
+<h:head>
+    <title>EC Store - Order Result</title>
+    <h:outputStylesheet name=\"style.css\" />
+</h:head>
+<h:body>
+    <h:form>
+        <div class=\"header\">
+            <h1>Order Confirmation</h1>
+        </div>
+
+        <div class=\"order-result\">
+            <h:panelGroup rendered=\"#{orderBean.orderCompleted()}\">
+                <h2>Thank you for your order!</h2>
+                <div class=\"order-details\">
+                    <p>Order Number: <strong><h:outputText value=\"#{orderBean.orderNumber}\" /></strong></p>
+                    <p>Order Date: <strong><h:outputText value=\"#{orderBean.orderDate}\" /></strong></p>
+                    <p>Total Amount: <strong>\$<h:outputText value=\"#{orderBean.orderTotal}\" /></strong></p>
+                    <p>Status: <strong><h:outputText value=\"#{orderBean.status}\" /></strong></p>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered=\"#{not orderBean.orderCompleted()}\">
+                <p>No order information available. Please place an order first.</p>
+            </h:panelGroup>
+        </div>
+
+        <div class=\"navigation\">
+            <h:commandLink action=\"index.xhtml?faces-redirect=true\" value=\"Back to Store\" />
+        </div>
+
+        <div class=\"footer\">
+            <p>&copy; 2026 EC Store. All rights reserved.</p>
+        </div>
+    </h:form>
+</h:body>
+</html>
