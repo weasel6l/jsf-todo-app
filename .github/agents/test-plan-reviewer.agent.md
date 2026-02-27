@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: 作業プランレビューエージェント。test-plan-designerが立案したテスト実装プランをレビューし、承認または差し戻しを行う。jsf-test-orchestrator フェーズ 2 のレビューループで呼び出される
 tools:
@@ -92,4 +91,3 @@ tools:
 - [ ] `test_implementation_plan` メモリを読み込んだ
 - [ ] 全チェックリスト項目を確認した
 - [ ] 承認または差し戻しの判定をユーザーに報告した
-```

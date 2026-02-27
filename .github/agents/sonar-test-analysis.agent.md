@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: SonarQube テスト解析エージェント。今回実装したテストコードに対してSonarQube解析を実行し、品質ゲートのPassedと全カバレッジ100%を目標に問題を修正する。jsf-test-orchestrator フェーズ 9 から呼び出される
 tools:
@@ -191,4 +190,3 @@ git status --short
 - [ ] 全カバレッジが 100% である（または除外承認済み）
 - [ ] `sonar-project.properties` をコミットしていない
 - [ ] 解析結果をユーザーに報告した
-```

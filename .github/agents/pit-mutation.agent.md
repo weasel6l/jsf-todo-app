@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: PIT ミューテーションテストエージェント。PIT を使ってミューテーションテストを実施し、Mutation Score 80% 以上を目標にテストケースを追加・修正する。jsf-test-orchestrator フェーズ 6 から呼び出される
 tools:
@@ -114,4 +113,3 @@ Survived ミュータント一覧: （残存している場合）
 - [ ] Mutation Score が 80% 以上である（または等価ミュータントとして承認済み）
 - [ ] 残存 Survived ミュータントの対応方針を記録した
 - [ ] 計測結果をユーザーに報告した
-```

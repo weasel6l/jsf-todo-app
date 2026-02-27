@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: JaCoCo カバレッジ計測・改善エージェント。JaCoCo でカバレッジを計測し、全カバレッジ 100% を目標にテストケースを追加・修正する。jsf-test-orchestrator フェーズ 5 から呼び出される
 tools:
@@ -116,4 +115,3 @@ mcp_sonarqube_get_file_coverage_details を呼び出す
 - [ ] 全カバレッジが 100% である（または到達不能コードを除外して承認済み）
 - [ ] `target/site/jacoco/jacoco.xml` が存在する
 - [ ] 計測結果をユーザーに報告した
-```

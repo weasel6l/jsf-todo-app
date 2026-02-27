@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: JUnit5 テストコードレビューエージェント。junit5-implementor が実装したテストコードを junit5-testing スキルに基づきレビューし、承認または差し戻しを報告する。jsf-test-orchestrator フェーズ 4 のレビューループで呼び出される
 tools:
@@ -101,4 +100,3 @@ tools:
 
 - [ ] 全テストクラスのレビューチェックリストを確認した
 - [ ] 承認または差し戻しの判定をユーザーに報告した
-```

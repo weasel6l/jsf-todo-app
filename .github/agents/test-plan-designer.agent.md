@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: テスト実装作業プラン設計エージェント。JSFコードを分析してテスト対象クラスを洗い出し、フェーズ3〜9の具体的な作業プランを立案する。プランの内容はtest-plan-reviewerに渡してレビューを受ける。jsf-test-orchestrator フェーズ 2 から呼び出される
 tools:
@@ -119,4 +118,3 @@ serena/write_memory でメモリ名 "test_implementation_plan" に保存する
 - [ ] フェーズ 3〜7 の作業計画を立案した
 - [ ] `test_implementation_plan` メモリに保存した
 - [ ] `test-plan-reviewer` へのレビュー依頼をユーザーに報告した
-```

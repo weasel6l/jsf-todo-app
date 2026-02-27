@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: 環境セットアップ確認エージェント。JUnit5・JaCoCo・PIT・jqwik・SonarQube のバージョン互換性を検証し、pom.xml や Docker コンテナの設定を確認・修正する。jsf-test-orchestrator フェーズ 1 から呼び出される
 tools:
@@ -132,4 +131,3 @@ sonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 - [ ] SonarQube サーバーが `{"status":"UP"}` を返した
 - [ ] `sonar-project.properties` が存在し、`sonar.coverage.jacoco.xmlReportPaths` が設定されている
 - [ ] 確認結果をユーザーに報告した
-```

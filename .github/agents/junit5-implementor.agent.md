@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: JUnit5 テスト実装エージェント。テスト設計結果をもとに JUnit5 テストコードを TDD で実装する。junit5-testing スキルに従い、@Nested・@DisplayName・Given-When-Then 構文でテストを記述する。jsf-test-orchestrator フェーズ 4 から呼び出される
 tools:
@@ -156,4 +155,3 @@ class FooServiceTest {
 - [ ] 全テストメソッドに Javadoc が記述されている
 - [ ] 全アサーションにメッセージが付与されている
 - [ ] `junit5-reviewer` エージェントへのレビュー依頼をユーザーに報告した
-```

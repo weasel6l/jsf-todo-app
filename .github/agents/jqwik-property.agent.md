@@ -1,4 +1,3 @@
-```chatagent
 ---
 description: jqwik プロパティベーステスト実装エージェント。jqwik を使ってプロパティベーステストを実装し、全 @Property が PASSED になるまでテストを修正する。jsf-test-orchestrator フェーズ 7 から呼び出される
 tools:
@@ -132,4 +131,3 @@ mvn test "-Dtest={プロパティテストクラス名}"
 - [ ] 全 `@Property` が PASSED である（または「実施不要」として承認待ち）
 - [ ] 「実施不要」と判断したクラスは `test-review-agent` に承認を求めることをユーザーに報告した
 - [ ] 実装結果をユーザーに報告した
-```
