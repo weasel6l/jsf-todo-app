@@ -54,7 +54,6 @@
 		},
 		// Copilot エージェントがターミナルコマンドを自動承認するリスト
 		"chat.tools.terminal.autoApprove": {
-			// Maven ビルド
 			"mvn clean": true,
 			"mvn compile": true,
 			"mvn package": true,
@@ -64,45 +63,32 @@
 			"mvn dependency:resolve": true,
 			"mvn dependency:tree": true,
 			"mvn test": true,
-			// Tomcat 起動
 			"mvn tomcat7:run": true,
-			// Git 操作
 			"git add": true,
 			"git commit": true,
 			"git status": true,
 			"git log": true,
 			"git diff": true,
-			// Playwright E2E テスト
 			"npx playwright": true,
 			"node test-server.js": true,
-			// Node / パッケージマネージャー
 			"npm": true,
 			"pnpm": true,
-			// PowerShell ユーティリティ（ファイル操作・確認系）
 			"Test-Path": true,
 			"ForEach-Object": true,
-			// SonarQube 静的解析
-			// sonar-scanner-cli の実行（Docker 経由）・SonarQube API の確認で使用
 			"docker run": true,
 			"docker start": true,
 			"curl.exe": true,
-			// PowerShell ファイル検索・品質チェック
-			// Javadoc HTML タグ・1行 Javadoc・末尾改行の確認で多用する
 			"Get-ChildItem": true,
 			"Select-String": true,
 			"Where-Object": true,
 			"Write-Output": true,
 			"Write-Host": true,
-			// PowerShell UTF-8 BOM なしファイル作成
-			// api-implementation スキルが要求するエンコーディングで新規 Java ファイルを作成するために必要
 			"[System.IO.File]::": true,
 			"[System.Text.UTF8Encoding]::": true,
-			// PowerShell 変数代入（ファイルバイト列の末尾改行確認などで使用）
 			"$b = ": true,
 			"$enc = ": true,
 			"$c = ": true,
 			"$ng = ": true,
-			// SonarQube API レスポンス処理で使用する変数・コマンド
 			"$json = ": true,
 			"$r = ": true,
 			"$resp = ": true,
@@ -111,7 +97,6 @@
 			"ConvertFrom-Json": true,
 			"Out-File": true,
 			"foreach (": true,
-			// PowerShell 汎用コマンド
 			"Set-Location": true,
 			"Get-Content": true,
 			"Set-Content": true,
@@ -119,7 +104,8 @@
 			"Remove-Item": true,
 			"New-Item": true,
 			"Push-Location": true,
-			"Pop-Location": true
+			"Pop-Location": true,
+			"Out-Null": true
 		}
 	}
 }
