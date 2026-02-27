@@ -60,11 +60,11 @@ tools:
 | 3. テスト設計 | `test-design-specialist` | テスト設計（境界値・同値分割・エラー系） |
 | 4. JUnit5 テスト実装 | `junit5-implementor` | JUnit5 テストコードの実装 |
 | | `junit5-reviewer` | 実装されたテストコードのレビューと承認 |
-| 5. カバレッジ計測・改善 | `jacoco-coverage-agent` | JaCoCo によるカバレッジ 100% 達成 |
-| 6. ミューテーションテスト | `pit-mutation-agent` | PIT によるミューテーションテストと改善 |
-| 7. プロパティベーステスト | `jqwik-property-agent` | jqwik によるプロパティベーステストの実装 |
-| 8. テスト全体レビュー | `test-review-agent` | 全テストのレビューと差し戻し判断 |
-| 9. SonarQube 解析 | `sonar-test-analysis-agent` | SonarQube による品質ゲート通過確認 |
+| 5. カバレッジ計測・改善 | `jacoco-coverage` | JaCoCo によるカバレッジ 100% 達成 |
+| 6. ミューテーションテスト | `pit-mutation` | PIT によるミューテーションテストと改善 |
+| 7. プロパティベーステスト | `jqwik-property` | jqwik によるプロパティベーステストの実装 |
+| 8. テスト全体レビュー | `test-review` | 全テストのレビューと差し戻し判断 |
+| 9. SonarQube 解析 | `sonar-test-analysis` | SonarQube による品質ゲート通過確認 |
 
 ---
 
@@ -109,7 +109,7 @@ tools:
 
 ## 5. フェーズ 8 の差し戻し判断基準
 
-テスト全体レビュー（`test-review-agent`）が不承認を出した場合、以下の基準で差し戻しフェーズを判断する:
+テスト全体レビュー（`test-review`）が不承認を出した場合、以下の基準で差し戻しフェーズを判断する:
 
 | 不承認の理由 | 差し戻し先 |
 |---|---|
@@ -132,11 +132,11 @@ tools:
 | 作業プラン設計 | 2 | `test-plan-designer` | テスト対象の分析と実装プランを立案し、レビュアーの承認を得る |
 | テスト設計 | 3 | `test-design-specialist` | 境界値・同値分割・エラー系のテスト設計を行う |
 | JUnit5 テスト実装 | 4 | `junit5-implementor` | JUnit5 テストを TDD で実装し、レビュアーの承認を得る |
-| カバレッジ計測・改善 | 5 | `jacoco-coverage-agent` | JaCoCo でカバレッジを計測し 100% を達成する |
-| ミューテーションテスト | 6 | `pit-mutation-agent` | PIT でミューテーションテストを実施し Mutation Score 80% 以上を達成する |
-| プロパティベーステスト | 7 | `jqwik-property-agent` | jqwik でプロパティベーステストを実装し全プロパティを PASSED にする |
-| テスト全体レビュー | 8 | `test-review-agent` | 全テストをレビューし、不承認の場合は対応フェーズに差し戻す |
-| SonarQube 解析 | 9 | `sonar-test-analysis-agent` | SonarQube の品質ゲートを通過させる |
+| カバレッジ計測・改善 | 5 | `jacoco-coverage` | JaCoCo でカバレッジを計測し 100% を達成する |
+| ミューテーションテスト | 6 | `pit-mutation` | PIT でミューテーションテストを実施し Mutation Score 80% 以上を達成する |
+| プロパティベーステスト | 7 | `jqwik-property` | jqwik でプロパティベーステストを実装し全プロパティを PASSED にする |
+| テスト全体レビュー | 8 | `test-review` | 全テストをレビューし、不承認の場合は対応フェーズに差し戻す |
+| SonarQube 解析 | 9 | `sonar-test-analysis` | SonarQube の品質ゲートを通過させる |
 
 ---
 
