@@ -17,6 +17,7 @@
 		},
 		// ファイルエンコーディング (pom.xml の UTF-8 設定に合わせる)
 		"files.encoding": "utf8",
+		"files.autoGuessEncoding": false,
 		// エクスプローラーからビルド成果物を非表示
 		"files.exclude": {
 			"target/": true,
