@@ -19,6 +19,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * ProductResource の統合テスト
@@ -34,6 +35,12 @@ class ProductResourceTest {
      */
     @Inject
     WebTarget target;
+
+    /**
+     * 商品カタログサービス（isOutOfStock の直接テスト用）
+     */
+    @Inject
+    ProductCatalogService catalogService;
 
     /**
      * 前提条件: 商品データが初期化済み
@@ -120,5 +127,22 @@ class ProductResourceTest {
 
         // Then
         assertNotNull(productResponse, "インスタンスが生成されること");
+    }
+
+    /**
+     * 事前条件: 存在しない商品 ID（99999）
+     * 期待する事後条件: isOutOfStock が true を返すこと（orElse(true) の分岐）
+     */
+    @Test
+    @DisplayName("ProductCatalogService.isOutOfStock - 存在しない商品 ID は在庫切れ扱いになること")
+    void isOutOfStockReturnsTrueForNonExistentProduct() {
+        // Given: 存在しない商品 ID
+        long nonExistentId = 99999L;
+
+        // When
+        boolean result = catalogService.isOutOfStock(nonExistentId);
+
+        // Then
+        assertTrue(result, "存在しない商品 ID は isOutOfStock=true であること");
     }
 }

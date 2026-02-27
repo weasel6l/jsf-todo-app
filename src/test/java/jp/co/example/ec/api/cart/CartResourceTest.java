@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -265,5 +266,37 @@ class CartResourceTest {
 
         // Then
         org.junit.jupiter.api.Assertions.assertNotNull(service, "インスタンスが生成されること");
+    }
+
+    /**
+     * 事前条件: カートに商品 id=1 を 2 個追加済み
+     * 期待する事後条件: GET /api/cart の items[0] の全フィールド（productId, name, price, quantity, subtotal）が null でないこと
+     */
+    @Test
+    @DisplayName("GET /api/cart - items の CartItemResponse フィールドが正しく返ること")
+    void getCartItemResponseFields() {
+        // Given: 商品 id=1 を 2 個追加
+        Map<String, Object> body = Map.of("productId", 1L, "quantity", 2);
+        target.path("/api/cart/items")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.json(body));
+
+        // When
+        Response response = target.path("/api/cart")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+
+        // Then: items[0] の各フィールドが null でないこと
+        assertEquals(200, response.getStatus(), "HTTP 200 が返ること");
+        Map<String, Object> cart = response.readEntity(new GenericType<Map<String, Object>>() {});
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> items = (List<Map<String, Object>>) cart.get("items");
+        assertEquals(1, items.size(), "items が 1 件であること");
+        Map<String, Object> item = items.get(0);
+        assertNotNull(item.get("productId"), "productId が null でないこと");
+        assertNotNull(item.get("productName"), "productName が null でないこと");
+        assertNotNull(item.get("price"), "price が null でないこと");
+        assertEquals(2, ((Number) item.get("quantity")).intValue(), "quantity が 2 であること");
+        assertNotNull(item.get("subtotal"), "subtotal が null でないこと");
     }
 }
